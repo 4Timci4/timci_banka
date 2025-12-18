@@ -19,6 +19,10 @@ createApp({
         // Filter State for History
         const transactionFilter = ref('all'); // 'all', 'in', 'out'
         
+        // Pagination State for History
+        const currentPage = ref(1);
+        const itemsPerPage = ref(8);
+        
         // Data
         const user = ref({
             ...mockUser,
@@ -103,6 +107,47 @@ createApp({
                 return transactions.value.filter(t => t.type === 'out');
             }
         });
+
+        // Pagination computed properties
+        const totalPages = computed(() => {
+            const filtered = transactionFilter.value === 'all'
+                ? transactions.value
+                : transactions.value.filter(t => t.type === transactionFilter.value);
+            return Math.ceil(filtered.length / itemsPerPage.value);
+        });
+
+        const paginatedTransactions = computed(() => {
+            const filtered = transactionFilter.value === 'all'
+                ? transactions.value
+                : transactions.value.filter(t => t.type === transactionFilter.value);
+            const start = (currentPage.value - 1) * itemsPerPage.value;
+            const end = start + itemsPerPage.value;
+            return filtered.slice(start, end);
+        });
+
+        // Pagination methods
+        const goToPage = (page) => {
+            if (page >= 1 && page <= totalPages.value) {
+                currentPage.value = page;
+            }
+        };
+
+        const nextPage = () => {
+            if (currentPage.value < totalPages.value) {
+                currentPage.value++;
+            }
+        };
+
+        const prevPage = () => {
+            if (currentPage.value > 1) {
+                currentPage.value--;
+            }
+        };
+
+        const changeItemsPerPage = (count) => {
+            itemsPerPage.value = count;
+            currentPage.value = 1; // Reset to first page
+        };
 
         // --- Methods ---
         const formatAmount = (value) => {
@@ -319,8 +364,12 @@ createApp({
             loginError,
             errorModal,
             transactionFilter,
+            currentPage,
+            itemsPerPage,
             transactions,
             filteredTransactions,
+            paginatedTransactions,
+            totalPages,
             recentTransactions,
             nearbyPlayers,
             transferForm,
@@ -346,7 +395,11 @@ createApp({
             atmAmount,
             openAtmModal,
             closeAtmModal,
-            handleAtmTransaction
+            handleAtmTransaction,
+            goToPage,
+            nextPage,
+            prevPage,
+            changeItemsPerPage
         };
     }
 }).mount('#app');
