@@ -20,7 +20,10 @@ createApp({
         const transactionFilter = ref('all'); // 'all', 'in', 'out'
         
         // Data
-        const user = ref({ ...mockUser });
+        const user = ref({
+            ...mockUser,
+            cardNumberLast4: Math.floor(1000 + Math.random() * 9000)
+        });
         const transactions = ref([...mockTransactions]);
         const nearbyPlayers = ref([...mockNearbyPlayers]);
         const loans = ref([...mockLoans]);
