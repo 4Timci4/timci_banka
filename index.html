@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Santos Bank</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#2563eb', // Brighter Blue
+                            light: '#60a5fa',
+                            dark: '#1e3a8a', 
+                            glow: 'rgba(37, 99, 235, 0.5)'
+                        },
+                        accent: {
+                            DEFAULT: '#fbbf24', // Amber 400
+                            glow: 'rgba(251, 191, 36, 0.4)'
+                        },
+                        surface: {
+                            light: '#1e293b', // Slate 800
+                            DEFAULT: '#0f172a', // Slate 900
+                            dark: '#020617', // Slate 950
+                        },
+                        success: '#10b981',
+                        danger: '#ef4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'glow-primary': '0 0 20px -5px var(--tw-colors-primary-glow)',
+                        'glow-accent': '0 0 20px -5px var(--tw-colors-accent-glow)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <!-- Vue.js CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="w-screen h-screen overflow-hidden bg-transparent flex justify-center items-center font-sans antialiased text-slate-200">
+    
+    <div id="app" v-cloak class="relative w-full h-full flex justify-center items-center">
+        <!-- Background Overlay -->
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm -z-10"></div>
+
+        <!-- Main Container -->
+        <main class="w-[85vw] h-[85vh] max-w-[1600px] max-h-[900px] bg-surface-dark rounded-[2rem] shadow-2xl overflow-hidden relative flex transition-all duration-300 border border-slate-800"
+              :class="{ 'bg-gradient-to-br from-surface-dark to-primary-dark': currentView === 'login' }">
+            
+            <!-- VIEW: LOGIN -->
+            <transition name="fade" mode="out-in">
+                <section v-if="currentView === 'login'" class="w-full h-full flex flex-col justify-center items-center text-white relative overflow-hidden" key="login">
+                    <!-- Decorational Background Elements -->
+                    <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px]"></div>
+                    <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px]"></div>
+
+                    <div class="bg-surface-light/30 backdrop-blur-xl border border-white/10 p-12 rounded-3xl w-[400px] text-center shadow-glass relative z-10">
+                        <div class="mb-10">
+                            <div class="w-20 h-20 mx-auto mb-6 text-accent bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20 shadow-glow-accent">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><line x1="16" y1="21" x2="16" y2="17"></line><line x1="12" y1="21" x2="12" y2="17"></line><line x1="8" y1="21" x2="8" y2="17"></line><line x1="2" y1="11" x2="22" y2="11"></line></svg>
+                            </div>
+                            <h1 class="text-3xl font-bold tracking-tight text-white">LS Bank</h1>
+                            <p class="text-slate-300 text-sm mt-2 font-light">Secure Banking Systems v2.0</p>
+                        </div>
+
+                        <div class="space-y-8">
+                            <!-- PIN Display -->
+                            <div class="h-16 bg-black/50 rounded-2xl flex items-center justify-center text-4xl tracking-[0.5em] font-mono border border-white/5 shadow-inner transition-colors duration-200 group relative overflow-hidden" 
+                                 :class="loginError ? 'border-danger/50 shadow-danger/20 animate-shake' : 'border-white/10'">
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 translate-x-[-200%] group-hover:animate-shimmer"></div>
+                                <span :class="loginError ? 'text-danger' : 'text-accent'">{{ pinDisplay }}</span>
+                            </div>
+                            
+                            <!-- Keypad -->
+                            <div class="grid grid-cols-3 gap-4 px-2">
+                                <button v-for="n in 9" :key="n" @click="enterPin(n)" 
+                                        class="h-14 rounded-xl bg-white/5 hover:bg-white/10 active:scale-95 transition-all flex items-center justify-center text-xl font-medium border border-white/5 hover:border-white/20 shadow-sm">
+                                    {{ n }}
+                                </button>
+                                <button class="h-14 rounded-xl text-danger hover:bg-danger/10 active:scale-95 transition-all flex items-center justify-center font-bold border border-transparent hover:border-danger/20" @click="clearPin">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                                </button>
+                                <button @click="enterPin(0)" class="h-14 rounded-xl bg-white/5 hover:bg-white/10 active:scale-95 transition-all flex items-center justify-center text-xl font-medium border border-white/5 hover:border-white/20">0</button>
+                                <button class="h-14 rounded-xl bg-success/10 text-success hover:bg-success/20 active:scale-95 transition-all flex items-center justify-center border border-success/20" @click="submitLogin">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-xs text-slate-500 font-mono">ID: {{ user.phone }}</div>
+                </section>
+
+                <!-- VIEW: DASHBOARD & OTHERS -->
+                <section v-else class="flex w-full h-full bg-surface-dark" key="app">
+                    
+                    <!-- Sidebar -->
+                    <aside class="w-80 bg-surface border-r border-slate-800 p-6 flex flex-col shrink-0 relative z-20">
+                        <!-- Brand -->
+                        <div class="mb-12 flex items-center gap-4 px-2">
+                            <div class="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                                <span class="font-bold text-lg">LS</span>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-xl text-white tracking-tight">LS Bank</h2>
+                                <p class="text-xs text-slate-500">Personal Banking</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation -->
+                        <nav class="flex-1 space-y-2">
+                            <p class="px-4 text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Menu</p>
+                            <button v-for="item in menuItems" :key="item.id"
+                                    @click="currentView = item.id"
+                                    class="w-full flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden"
+                                    :class="currentView === item.id ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'">
+                                
+                                <div class="absolute inset-0 bg-primary/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-out" v-if="currentView !== item.id"></div>
+                                <div class="w-1 h-6 bg-primary rounded-full absolute left-0 top-1/2 -translate-y-1/2 transition-all duration-300"
+                                     :class="currentView === item.id ? 'opacity-100' : 'opacity-0'"></div>
+                                
+                                <span class="relative z-10" v-html="item.icon"></span>
+                                <span class="relative z-10 font-medium">{{ item.label }}</span>
+                            </button>
+                        </nav>
+
+                        <!-- User Profile (Bottom) -->
+                        <div class="mt-auto bg-slate-800/50 rounded-2xl p-4 border border-slate-700/50 flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-lg font-bold text-slate-300 border border-slate-600">
+                                {{ user.name.charAt(0) }}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="font-bold text-sm text-white truncate">{{ user.name }}</div>
+                                <div class="text-xs text-slate-400 font-mono truncate">{{ user.phone }}</div>
+                            </div>
+                            <button @click="logout" class="text-slate-400 hover:text-danger transition-colors p-2" title="Çıkış Yap">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- Content Area -->
+                    <main class="flex-1 p-10 overflow-y-auto bg-surface-dark relative">
+                        <!-- Top Bar -->
+                        <header class="flex justify-between items-center mb-10 sticky top-0 z-10 py-4 bg-surface-dark/95 backdrop-blur-sm">
+                            <div>
+                                <h2 class="text-3xl font-bold text-white">{{ getPageTitle }}</h2>
+                                <p class="text-slate-400 text-sm mt-1">Hoşgeldin, {{ user.name }}</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-2 px-4 py-2 bg-surface border border-slate-700 rounded-full">
+                                    <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+                                    <span class="text-xs font-mono text-slate-300">{{ currentDate }}</span>
+                                </div>
+                            </div>
+                        </header>
+
+                        <!-- Dashboard Component -->
+                        <div v-if="currentView === 'dashboard'" class="space-y-8 animate-fade-in pb-10">
+                            <!-- Balance Card -->
+                            <div class="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-primary-light text-white p-12 rounded-[2rem] shadow-glow-primary border border-white/10">
+                                <!-- Background Mesh -->
+                                <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 30px 30px;"></div>
+                                <div class="absolute right-0 top-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
+                                
+                                <div class="relative z-10 flex justify-between items-end">
+                                    <div>
+                                        <div class="text-blue-200 text-sm font-medium mb-3 uppercase tracking-wider">Toplam Varlıklar</div>
+                                        <div class="text-6xl font-bold tracking-tight font-mono mb-2">{{ formatMoney(user.balance) }}</div>
+                                        <div class="flex items-center gap-3 mt-4">
+                                            <div class="px-3 py-1 rounded-full bg-white/20 border border-white/10 text-sm backdrop-blur-md flex items-center gap-2">
+                                                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                                <span class="font-medium text-emerald-100">+%12.5 Artış</span>
+                                            </div>
+                                            <span class="text-blue-200 text-sm">bu ay</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/20">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions & Transactions Grid -->
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                <!-- Quick Actions -->
+                                <div class="lg:col-span-2 space-y-6">
+                                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                        <span class="w-1 h-5 bg-accent rounded-full"></span>
+                                        Hızlı İşlemler
+                                    </h3>
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <button @click="currentView = 'transfer'" class="relative overflow-hidden bg-surface p-6 rounded-3xl border border-slate-700 hover:border-primary/50 transition-all group shadow-lg">
+                                            <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full group-hover:bg-primary/10 transition-colors"></div>
+                                            <div class="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 border border-primary/20">
+                                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                                            </div>
+                                            <span class="block font-bold text-lg text-slate-200 group-hover:text-white">Transfer</span>
+                                            <span class="text-xs text-slate-500">Para Gönder/İste</span>
+                                        </button>
+                                        
+                                        <button @click="currentView = 'loans'" class="relative overflow-hidden bg-surface p-6 rounded-3xl border border-slate-700 hover:border-accent/50 transition-all group shadow-lg">
+                                            <div class="absolute top-0 right-0 w-24 h-24 bg-accent/5 rounded-bl-full group-hover:bg-accent/10 transition-colors"></div>
+                                            <div class="w-14 h-14 bg-accent/10 text-accent rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 border border-accent/20">
+                                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            </div>
+                                            <span class="block font-bold text-lg text-slate-200 group-hover:text-white">Kredi</span>
+                                            <span class="text-xs text-slate-500">Nakit Avans</span>
+                                        </button>
+                                        
+                                        <button class="relative overflow-hidden bg-surface p-6 rounded-3xl border border-slate-700 hover:border-purple-500/50 transition-all group shadow-lg">
+                                            <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-bl-full group-hover:bg-purple-500/10 transition-colors"></div>
+                                            <div class="w-14 h-14 bg-purple-500/10 text-purple-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 border border-purple-500/20">
+                                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                            </div>
+                                            <span class="block font-bold text-lg text-slate-200 group-hover:text-white">Faturalar</span>
+                                            <span class="text-xs text-slate-500">Otomatik Ödeme</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Activity Widget -->
+                                <div class="bg-surface p-6 rounded-3xl border border-slate-700 shadow-lg flex flex-col">
+                                    <div class="flex justify-between items-center mb-6">
+                                        <h3 class="text-lg font-bold text-white">Son İşlemler</h3>
+                                        <button @click="currentView = 'history'" class="text-xs text-primary hover:text-primary-light font-medium">Tümünü Gör</button>
+                                    </div>
+                                    <div class="space-y-2 flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                                        <div v-for="t in recentTransactions" :key="t.id" class="flex items-center justify-between p-3 hover:bg-white/5 rounded-xl transition-colors group cursor-default">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-full flex items-center justify-center border transition-colors" 
+                                                     :class="t.type === 'in' ? 'bg-success/10 text-success border-success/20 group-hover:border-success/50' : 'bg-white/5 text-slate-400 border-slate-700 group-hover:border-slate-500'">
+                                                    <svg v-if="t.type === 'in'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                                    <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                                </div>
+                                                <div>
+                                                    <div class="font-medium text-slate-200 text-sm">{{ t.title }}</div>
+                                                    <div class="text-[10px] text-slate-500 uppercase tracking-wide">{{ t.date }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="font-bold font-mono text-sm" :class="t.type === 'in' ? 'text-success' : 'text-slate-300'">
+                                                {{ t.type === 'out' ? '-' : '+' }}{{ formatMoney(t.amount) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Transfer Component -->
+                        <div v-if="currentView === 'transfer'" class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in pb-10">
+                            <!-- Send Money Form -->
+                            <div class="bg-surface p-8 rounded-[2rem] shadow-lg border border-slate-700 relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[4rem]"></div>
+                                
+                                <h3 class="text-xl font-bold text-white mb-8 flex items-center gap-2 relative z-10">
+                                    <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    </div>
+                                    Para Transferi
+                                </h3>
+
+                                <div class="space-y-6 relative z-10">
+                                    <div class="group">
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Alıcı Telefon No</label>
+                                        <div class="relative">
+                                            <input type="text" v-model="transferForm.phone" placeholder="555-0100" maxlength="30" 
+                                                   class="w-full px-4 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all text-white placeholder-slate-700 font-mono">
+                                            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="group">
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Gönderilecek Tutar</label>
+                                        <div class="relative">
+                                            <input type="number" v-model="transferForm.amount" placeholder="0.00" 
+                                                   class="w-full pl-8 pr-16 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all font-mono text-2xl font-bold text-white placeholder-slate-700">
+                                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xl">$</span>
+                                            <button class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-800 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-colors" @click="transferForm.amount = user.balance">TÜMÜ</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="group">
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Açıklama (Opsiyonel)</label>
+                                        <input type="text" v-model="transferForm.description" placeholder="Ödeme..." 
+                                               class="w-full px-4 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all text-white placeholder-slate-700">
+                                    </div>
+
+                                    <button class="w-full bg-gradient-to-r from-primary to-primary-light hover:to-white text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 border border-white/10 mt-4" @click="handleTransfer">
+                                        Transferi Onayla
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Contacts List -->
+                            <div class="flex flex-col h-full space-y-4">
+                                <h3 class="text-lg font-bold text-slate-300 flex items-center gap-2 px-1">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                    Yakındaki Kişiler
+                                </h3>
+                                <div class="bg-surface rounded-[2rem] shadow-lg border border-slate-700 flex-1 overflow-hidden flex flex-col">
+                                    <div class="p-2 space-y-1 overflow-y-auto custom-scrollbar flex-1">
+                                        <div v-for="player in nearbyPlayers" :key="player.id" @click="transferForm.phone = player.phone"
+                                             class="flex items-center p-3 rounded-2xl border border-transparent hover:border-slate-600 hover:bg-white/5 cursor-pointer transition-all group">
+                                            <div class="relative">
+                                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center font-bold text-lg text-slate-300 shadow-inner group-hover:text-white transition-colors border border-white/5">
+                                                    {{ player.name.charAt(0) }}
+                                                </div>
+                                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-success border-4 border-surface rounded-full"></div>
+                                            </div>
+                                            <div class="flex-1 ml-4">
+                                                <div class="font-bold text-slate-200 group-hover:text-primary-light transition-colors">{{ player.name }}</div>
+                                                <div class="text-xs text-slate-500 font-mono bg-black/20 inline-block px-1.5 py-0.5 rounded mt-1">{{ player.phone }}</div>
+                                            </div>
+                                            <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform scale-50 group-hover:scale-100">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- History Component -->
+                        <div v-if="currentView === 'history'" class="bg-surface rounded-[2rem] shadow-lg border border-slate-700 overflow-hidden animate-fade-in flex flex-col h-[calc(100%-80px)]">
+                            <div class="p-6 border-b border-slate-700 flex justify-between items-center bg-surface-light">
+                                <h3 class="text-xl font-bold text-white">İşlem Dökümü</h3>
+                                <div class="flex gap-2">
+                                    <button class="px-4 py-2 rounded-lg bg-surface border border-slate-600 text-xs font-medium text-slate-300 hover:bg-slate-700">Tümü</button>
+                                    <button class="px-4 py-2 rounded-lg bg-surface border border-slate-700 text-xs font-medium text-slate-500 hover:bg-slate-700 hover:text-slate-300">Gelen</button>
+                                    <button class="px-4 py-2 rounded-lg bg-surface border border-slate-700 text-xs font-medium text-slate-500 hover:bg-slate-700 hover:text-slate-300">Giden</button>
+                                </div>
+                            </div>
+                            <div class="overflow-y-auto flex-1 custom-scrollbar">
+                                <table class="w-full text-left border-collapse">
+                                    <thead class="bg-surface-dark/50 sticky top-0 z-10 backdrop-blur-md">
+                                        <tr>
+                                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Durum</th>
+                                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tarih</th>
+                                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Açıklama</th>
+                                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Tutar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800">
+                                        <tr v-for="t in transactions" :key="t.id" class="hover:bg-white/[0.02] transition-colors group">
+                                            <td class="px-6 py-5">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-2 h-2 rounded-full" :class="t.type === 'in' ? 'bg-success shadow-glow-success' : 'bg-slate-500'"></div>
+                                                    <span class="text-sm font-medium" 
+                                                          :class="t.type === 'in' ? 'text-success' : 'text-slate-400'">
+                                                        {{ t.type === 'in' ? 'Gelen Transfer' : 'Harcama' }}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-5 text-slate-500 text-sm font-mono">{{ t.date }}</td>
+                                            <td class="px-6 py-5 font-medium text-slate-300 group-hover:text-white transition-colors">{{ t.title }}</td>
+                                            <td class="px-6 py-5 text-right font-mono font-bold text-lg" :class="t.type === 'in' ? 'text-success' : 'text-slate-200'">
+                                                {{ t.type === 'out' ? '-' : '+' }}{{ formatMoney(t.amount) }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Loans Component -->
+                        <div v-if="currentView === 'loans'" class="space-y-8 animate-fade-in pb-10">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <!-- Loan Calculator -->
+                                <div class="bg-surface border border-slate-700 text-white p-8 rounded-[2rem] shadow-xl relative overflow-hidden flex flex-col">
+                                     <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-accent to-accent/20"></div>
+                                     <div class="absolute -right-20 -top-20 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+                                    
+                                    <div class="mb-8 relative z-10">
+                                        <h3 class="text-xl font-bold flex items-center gap-3 mb-2">
+                                            <div class="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center border border-accent/20">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            </div>
+                                            Hızlı Kredi
+                                        </h3>
+                                        <p class="text-slate-400 text-sm ml-13">Anında onaylı nakit ihtiyaç kredisi</p>
+                                    </div>
+                                    
+                                    <div class="mb-10 flex-1">
+                                        <div class="flex justify-between items-end mb-6">
+                                            <span class="text-sm font-bold text-slate-500 uppercase">İstenen Tutar</span>
+                                            <div class="text-3xl font-bold text-white font-mono bg-surface-dark px-4 py-2 rounded-xl border border-slate-700 shadow-inner">
+                                                {{ formatMoney(loanForm.amount) }}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="relative h-12 flex items-center">
+                                            <input type="range" v-model.number="loanForm.amount" min="1000" max="50000" step="500" 
+                                                   class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-accent z-20 relative hover:accent-accent/80 transition-all">
+                                            <div class="absolute left-0 top-1/2 -translate-y-1/2 h-2 bg-accent rounded-l-lg pointer-events-none z-10" :style="{ width: (loanForm.amount / 50000 * 100) + '%' }"></div>
+                                        </div>
+                                        <div class="flex justify-between text-xs text-slate-500 font-mono mt-2">
+                                            <span>$1,000</span>
+                                            <span>$50,000</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-surface-dark/50 rounded-2xl p-6 space-y-4 mb-8 border border-slate-700/50">
+                                        <div class="flex justify-between text-sm items-center">
+                                            <span class="text-slate-400">Faiz Oranı</span>
+                                            <span class="font-mono text-accent font-bold bg-accent/10 px-2 py-0.5 rounded">%5.5</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm items-center">
+                                            <span class="text-slate-400">Vade</span>
+                                            <span class="font-mono text-white">12 Ay</span>
+                                        </div>
+                                        <div class="h-px bg-slate-700/50 my-2"></div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm font-bold text-slate-300">Toplam Geri Ödeme</span>
+                                            <span class="text-xl font-bold text-white">{{ formatMoney(loanForm.amount * 1.055) }}</span>
+                                        </div>
+                                    </div>
+
+                                    <button @click="applyLoan" class="w-full bg-accent hover:bg-yellow-400 text-slate-950 font-bold py-4 rounded-xl transition-all shadow-glow-accent hover:-translate-y-1 active:scale-95">
+                                        Krediyi Onayla ve Al
+                                    </button>
+                                </div>
+
+                                <!-- Active Loans -->
+                                <div class="bg-surface p-8 rounded-[2rem] shadow-lg border border-slate-700 flex flex-col">
+                                    <h3 class="text-xl font-bold text-white mb-6">Aktif Kredilerim</h3>
+                                    
+                                    <div v-if="loans.length === 0" class="flex-1 flex flex-col items-center justify-center min-h-[300px] text-slate-600 bg-surface-dark/30 rounded-3xl border border-slate-800 border-dashed">
+                                        <div class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4 text-slate-700">
+                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                        </div>
+                                        <p class="font-medium">Aktif krediniz bulunmuyor.</p>
+                                    </div>
+
+                                    <div v-else class="space-y-4 overflow-y-auto pr-2 custom-scrollbar max-h-[400px]">
+                                        <div v-for="loan in loans" :key="loan.id" class="p-5 border border-slate-700 bg-surface-dark rounded-2xl relative overflow-hidden group">
+                                            <div class="absolute left-0 top-0 w-1 h-full bg-primary"></div>
+                                            <div class="flex justify-between mb-4">
+                                                <div>
+                                                    <span class="block font-bold text-white text-lg">İhtiyaç Kredisi</span>
+                                                    <span class="text-xs text-slate-500">{{ loan.date }}</span>
+                                                </div>
+                                                <div class="px-2 py-1 bg-slate-800 rounded text-xs text-slate-300 h-fit">Aktif</div>
+                                            </div>
+                                            
+                                            <div class="flex justify-between items-end mb-4">
+                                                <div>
+                                                    <div class="text-xs text-slate-500 uppercase mb-1">Kalan Borç</div>
+                                                    <div class="text-xl font-bold text-primary-light font-mono">{{ formatMoney(loan.remainingAmount) }}</div>
+                                                </div>
+                                                <div class="text-right">
+                                                    <div class="text-xs text-slate-500 uppercase mb-1">Aylık Taksit</div>
+                                                    <div class="font-bold text-white font-mono">{{ formatMoney(loan.nextInstallment) }}</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="w-full bg-slate-800 rounded-full h-2 mb-4 overflow-hidden">
+                                                <div class="bg-primary h-2 rounded-full relative" :style="{ width: (loan.remainingAmount / loan.totalAmount * 100) + '%' }">
+                                                    <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white/20"></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <button class="w-full py-3 border border-slate-600 bg-slate-800/50 hover:bg-primary hover:border-primary text-slate-300 hover:text-white rounded-xl transition-all font-bold text-sm">
+                                                Taksit Öde
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </main>
+                </section>
+            </main>
+        </main>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
