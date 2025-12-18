@@ -178,13 +178,6 @@
                                     <div>
                                         <div class="text-blue-200 text-sm font-medium mb-3 uppercase tracking-wider">Toplam Varlıklar</div>
                                         <div class="text-6xl font-bold tracking-tight font-mono mb-2">{{ formatMoney(user.balance) }}</div>
-                                        <div class="flex items-center gap-3 mt-4">
-                                            <div class="px-3 py-1 rounded-full bg-white/20 border border-white/10 text-sm backdrop-blur-md flex items-center gap-2">
-                                                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                                                <span class="font-medium text-emerald-100">+%12.5 Artış</span>
-                                            </div>
-                                            <span class="text-blue-200 text-sm">bu ay</span>
-                                        </div>
                                     </div>
                                     <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/20">
                                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
@@ -200,14 +193,32 @@
                                         <span class="w-1 h-5 bg-accent rounded-full"></span>
                                         Hızlı İşlemler
                                     </h3>
-                                    <div class="grid grid-cols-3 gap-4">
+                                    <div class="grid grid-cols-4 gap-4">
+                                        <button @click="openAtmModal('deposit')" class="relative overflow-hidden bg-surface p-6 rounded-3xl border border-slate-700 hover:border-success/50 transition-all group shadow-lg">
+                                            <div class="absolute top-0 right-0 w-24 h-24 bg-success/5 rounded-bl-full group-hover:bg-success/10 transition-colors"></div>
+                                            <div class="w-14 h-14 bg-success/10 text-success rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 border border-success/20">
+                                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                            </div>
+                                            <span class="block font-bold text-lg text-slate-200 group-hover:text-white">Yatır</span>
+                                            <span class="text-xs text-slate-500">Para Yatır</span>
+                                        </button>
+
+                                        <button @click="openAtmModal('withdraw')" class="relative overflow-hidden bg-surface p-6 rounded-3xl border border-slate-700 hover:border-red-500/50 transition-all group shadow-lg">
+                                            <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-bl-full group-hover:bg-red-500/10 transition-colors"></div>
+                                            <div class="w-14 h-14 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 border border-red-500/20">
+                                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                                            </div>
+                                            <span class="block font-bold text-lg text-slate-200 group-hover:text-white">Çek</span>
+                                            <span class="text-xs text-slate-500">Para Çek</span>
+                                        </button>
+                                        
                                         <button @click="currentView = 'transfer'" class="relative overflow-hidden bg-surface p-6 rounded-3xl border border-slate-700 hover:border-primary/50 transition-all group shadow-lg">
                                             <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full group-hover:bg-primary/10 transition-colors"></div>
                                             <div class="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 border border-primary/20">
                                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                                             </div>
                                             <span class="block font-bold text-lg text-slate-200 group-hover:text-white">Transfer</span>
-                                            <span class="text-xs text-slate-500">Para Gönder/İste</span>
+                                            <span class="text-xs text-slate-500">Gönder</span>
                                         </button>
                                         
                                         <button @click="currentView = 'loans'" class="relative overflow-hidden bg-surface p-6 rounded-3xl border border-slate-700 hover:border-accent/50 transition-all group shadow-lg">
@@ -216,16 +227,7 @@
                                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                             </div>
                                             <span class="block font-bold text-lg text-slate-200 group-hover:text-white">Kredi</span>
-                                            <span class="text-xs text-slate-500">Nakit Avans</span>
-                                        </button>
-                                        
-                                        <button class="relative overflow-hidden bg-surface p-6 rounded-3xl border border-slate-700 hover:border-purple-500/50 transition-all group shadow-lg">
-                                            <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-bl-full group-hover:bg-purple-500/10 transition-colors"></div>
-                                            <div class="w-14 h-14 bg-purple-500/10 text-purple-400 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 border border-purple-500/20">
-                                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                            </div>
-                                            <span class="block font-bold text-lg text-slate-200 group-hover:text-white">Faturalar</span>
-                                            <span class="text-xs text-slate-500">Otomatik Ödeme</span>
+                                            <span class="text-xs text-slate-500">Başvuru</span>
                                         </button>
                                     </div>
                                 </div>
@@ -286,10 +288,11 @@
                                     <div class="group">
                                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Gönderilecek Tutar</label>
                                         <div class="relative">
-                                            <input type="number" v-model="transferForm.amount" placeholder="0.00" 
-                                                   class="w-full pl-8 pr-16 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all font-mono text-2xl font-bold text-white placeholder-slate-700">
+                                            <input type="text" v-model="transferForm.amount" placeholder="0"
+                                                   @input="transferForm.amount = formatAmount(transferForm.amount)"
+                                                   class="w-full pl-8 pr-16 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all text-white placeholder-slate-700">
                                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xl">$</span>
-                                            <button class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-800 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-colors" @click="transferForm.amount = user.balance">TÜMÜ</button>
+                                            <button class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-800 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-colors" @click="transferForm.amount = Math.floor(user.balance).toLocaleString('en-US')">TÜMÜ</button>
                                         </div>
                                     </div>
 
@@ -299,7 +302,10 @@
                                                class="w-full px-4 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all text-white placeholder-slate-700">
                                     </div>
 
-                                    <button class="w-full bg-gradient-to-r from-primary to-primary-light hover:to-white text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 border border-white/10 mt-4" @click="handleTransfer">
+                                    <button class="w-full bg-gradient-to-r from-primary to-primary-light hover:to-white text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 border border-white/10 mt-4" 
+                                              @click="handleTransfer"
+                                              :disabled="!transferForm.amount || !transferForm.phone || parseInt(transferForm.amount.replace(/\D/g, '')) <= 0"
+                                              :class="!transferForm.amount || !transferForm.phone || parseInt(transferForm.amount.replace(/\D/g, '')) <= 0 ? 'opacity-50 cursor-not-allowed' : ''">
                                         Transferi Onayla
                                     </button>
                                 </div>
@@ -313,7 +319,7 @@
                                 </h3>
                                 <div class="bg-surface rounded-[2rem] shadow-lg border border-slate-700 flex-1 overflow-hidden flex flex-col">
                                     <div class="p-2 space-y-1 overflow-y-auto custom-scrollbar flex-1">
-                                        <div v-for="player in nearbyPlayers" :key="player.id" @click="transferForm.phone = player.phone"
+                                        <div v-for="player in nearbyPlayers" :key="player.id"
                                              class="flex items-center p-3 rounded-2xl border border-transparent hover:border-slate-600 hover:bg-white/5 cursor-pointer transition-all group">
                                             <div class="relative">
                                                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center font-bold text-lg text-slate-300 shadow-inner group-hover:text-white transition-colors border border-white/5">
@@ -339,9 +345,21 @@
                             <div class="p-6 border-b border-slate-700 flex justify-between items-center bg-surface-light">
                                 <h3 class="text-xl font-bold text-white">İşlem Dökümü</h3>
                                 <div class="flex gap-2">
-                                    <button class="px-4 py-2 rounded-lg bg-surface border border-slate-600 text-xs font-medium text-slate-300 hover:bg-slate-700">Tümü</button>
-                                    <button class="px-4 py-2 rounded-lg bg-surface border border-slate-700 text-xs font-medium text-slate-500 hover:bg-slate-700 hover:text-slate-300">Gelen</button>
-                                    <button class="px-4 py-2 rounded-lg bg-surface border border-slate-700 text-xs font-medium text-slate-500 hover:bg-slate-700 hover:text-slate-300">Giden</button>
+                                    <button @click="transactionFilter = 'all'"
+                                            class="px-4 py-2 rounded-lg text-xs font-medium transition-all"
+                                            :class="transactionFilter === 'all' ? 'bg-surface border border-slate-600 text-slate-300' : 'bg-surface border border-slate-700 text-slate-500 hover:bg-slate-700 hover:text-slate-300'">
+                                        Tümü
+                                    </button>
+                                    <button @click="transactionFilter = 'in'"
+                                            class="px-4 py-2 rounded-lg text-xs font-medium transition-all"
+                                            :class="transactionFilter === 'in' ? 'bg-surface border border-slate-600 text-slate-300' : 'bg-surface border border-slate-700 text-slate-500 hover:bg-slate-700 hover:text-slate-300'">
+                                        Gelen
+                                    </button>
+                                    <button @click="transactionFilter = 'out'"
+                                            class="px-4 py-2 rounded-lg text-xs font-medium transition-all"
+                                            :class="transactionFilter === 'out' ? 'bg-surface border border-slate-600 text-slate-300' : 'bg-surface border border-slate-700 text-slate-500 hover:bg-slate-700 hover:text-slate-300'">
+                                        Giden
+                                    </button>
                                 </div>
                             </div>
                             <div class="overflow-y-auto flex-1 custom-scrollbar">
@@ -355,7 +373,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-800">
-                                        <tr v-for="t in transactions" :key="t.id" class="hover:bg-white/[0.02] transition-colors group">
+                                        <tr v-for="t in filteredTransactions" :key="t.id" class="hover:bg-white/[0.02] transition-colors group">
                                             <td class="px-6 py-5">
                                                 <div class="flex items-center gap-3">
                                                     <div class="w-2 h-2 rounded-full" :class="t.type === 'in' ? 'bg-success shadow-glow-success' : 'bg-slate-500'"></div>
@@ -373,6 +391,47 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+
+                        <!-- Bills Component -->
+                        <div v-if="currentView === 'bills'" class="animate-fade-in pb-10">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <!-- Unpaid Bills -->
+                                <div v-for="bill in bills" :key="bill.id"
+                                     class="bg-surface p-6 rounded-2xl border border-slate-700 hover:border-accent/30 transition-all group shadow-lg">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center" :class="bill.categoryColor">
+                                            <span v-html="bill.icon"></span>
+                                        </div>
+                                        <div :class="bill.status === 'pending' ? 'px-2 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'px-2 py-1 bg-slate-800 text-slate-400'"
+                                             class="text-xs font-bold rounded">
+                                            {{ bill.status === 'pending' ? 'Bekliyor' : 'Ödendi' }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="font-bold text-white mb-1">{{ bill.title }}</h4>
+                                    <p class="text-xs text-slate-500 mb-4">{{ bill.company }}</p>
+                                    
+                                    <div class="flex justify-between items-end mb-4">
+                                        <div>
+                                            <div class="text-xs text-slate-500 uppercase mb-1">Tutar</div>
+                                            <div class="text-2xl font-bold text-white font-mono">{{ formatMoney(bill.amount) }}</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xs text-slate-500 uppercase mb-1">Son Ödeme</div>
+                                            <div class="text-sm font-mono text-slate-300">{{ bill.dueDate }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button v-if="bill.status === 'pending'" @click="payBill(bill)"
+                                            class="w-full py-3 bg-accent/10 border border-accent/30 text-accent hover:bg-accent hover:text-slate-950 rounded-xl transition-all font-bold text-sm">
+                                        Şimdi Öde
+                                    </button>
+                                    <div v-else class="w-full py-3 text-center text-slate-600 text-sm">
+                                        Ödeme tamamlandı
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -398,14 +457,14 @@
                                         <div class="flex justify-between items-end mb-6">
                                             <span class="text-sm font-bold text-slate-500 uppercase">İstenen Tutar</span>
                                             <div class="text-3xl font-bold text-white font-mono bg-surface-dark px-4 py-2 rounded-xl border border-slate-700 shadow-inner">
-                                                {{ formatMoney(loanForm.amount) }}
+                                                {{ formatMoney(parseInt(loanForm.amount) || 0) }}
                                             </div>
                                         </div>
                                         
                                         <div class="relative h-12 flex items-center">
-                                            <input type="range" v-model.number="loanForm.amount" min="1000" max="50000" step="500" 
+                                            <input type="range" v-model="loanForm.amount" min="1000" max="50000" step="500" 
                                                    class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-accent z-20 relative hover:accent-accent/80 transition-all">
-                                            <div class="absolute left-0 top-1/2 -translate-y-1/2 h-2 bg-accent rounded-l-lg pointer-events-none z-10" :style="{ width: (loanForm.amount / 50000 * 100) + '%' }"></div>
+                                            <div class="absolute left-0 top-1/2 -translate-y-1/2 h-2 bg-accent rounded-l-lg pointer-events-none z-10" :style="{ width: (parseInt(loanForm.amount) / 50000 * 100) + '%' }"></div>
                                         </div>
                                         <div class="flex justify-between text-xs text-slate-500 font-mono mt-2">
                                             <span>$1,000</span>
@@ -425,11 +484,13 @@
                                         <div class="h-px bg-slate-700/50 my-2"></div>
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm font-bold text-slate-300">Toplam Geri Ödeme</span>
-                                            <span class="text-xl font-bold text-white">{{ formatMoney(loanForm.amount * 1.055) }}</span>
+                                            <span class="text-xl font-bold text-white">{{ formatMoney(Math.round((parseInt(loanForm.amount) || 0) * 1.055)) }}</span>
                                         </div>
                                     </div>
 
-                                    <button @click="applyLoan" class="w-full bg-accent hover:bg-yellow-400 text-slate-950 font-bold py-4 rounded-xl transition-all shadow-glow-accent hover:-translate-y-1 active:scale-95">
+                                    <button @click="applyLoan" class="w-full bg-accent hover:bg-yellow-400 text-slate-950 font-bold py-4 rounded-xl transition-all shadow-glow-accent hover:-translate-y-1 active:scale-95"
+                                              :disabled="!loanForm.amount || parseInt(loanForm.amount) < 1000"
+                                              :class="!loanForm.amount || parseInt(loanForm.amount) < 1000 ? 'opacity-50 cursor-not-allowed' : ''">
                                         Krediyi Onayla ve Al
                                     </button>
                                 </div>
@@ -486,6 +547,107 @@
                 </section>
             </main>
         </main>
+
+        <!-- ATM Modal -->
+        <transition name="modal">
+            <div v-if="showAtmModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-sm" @click="closeAtmModal">
+                <div @click.stop class="bg-surface border border-slate-700 rounded-3xl shadow-2xl w-[500px] overflow-hidden animate-fade-in">
+                    <!-- Modal Header -->
+                    <div class="p-6 border-b border-slate-700 flex items-center justify-between" :class="atmMode === 'deposit' ? 'bg-success/10' : 'bg-red-500/10'">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center" :class="atmMode === 'deposit' ? 'bg-success/20 text-success border border-success/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'">
+                                <svg v-if="atmMode === 'deposit'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">{{ atmMode === 'deposit' ? 'Para Yatır' : 'Para Çek' }}</h3>
+                                <p class="text-xs text-slate-400">ATM İşlemi</p>
+                            </div>
+                        </div>
+                        <button @click="closeAtmModal" class="text-slate-400 hover:text-white transition-colors p-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="p-8 space-y-6">
+                        <!-- Current Balance Display -->
+                        <div class="bg-surface-dark/50 border border-slate-700 rounded-2xl p-4 flex justify-between items-center">
+                            <span class="text-sm text-slate-400">Mevcut Bakiye</span>
+                            <span class="text-2xl font-bold text-white font-mono">{{ formatMoney(user.balance) }}</span>
+                        </div>
+
+                        <!-- Amount Input -->
+                        <div class="group">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+                                {{ atmMode === 'deposit' ? 'Yatırılacak Tutar' : 'Çekilecek Tutar' }}
+                            </label>
+                            <div class="relative">
+                                <input type="text" v-model="atmAmount" placeholder="0"
+                                       @input="atmAmount = formatAmount(atmAmount)"
+                                       class="w-full pl-12 pr-4 py-6 rounded-2xl bg-surface-dark border-2 border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-white placeholder-slate-700 text-3xl font-bold font-mono text-center">
+                                <span class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-2xl">$</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Amount Buttons -->
+                        <div class="grid grid-cols-4 gap-3">
+                            <button v-for="amount in [100, 500, 1000, 5000]" :key="amount"
+                                    @click="atmAmount = amount.toLocaleString('en-US')"
+                                    class="py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-slate-300 hover:text-white transition-all text-sm font-bold">
+                                ${{ amount.toLocaleString('en-US') }}
+                            </button>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-4 pt-4">
+                            <button @click="closeAtmModal"
+                                    class="flex-1 py-4 bg-surface-dark border border-slate-700 text-slate-300 hover:text-white rounded-xl transition-all font-bold">
+                                İptal
+                            </button>
+                            <button @click="handleAtmTransaction"
+                                    class="flex-1 py-4 rounded-xl font-bold transition-all hover:-translate-y-1 active:scale-95 shadow-lg"
+                                    :class="atmMode === 'deposit' ? 'bg-success hover:bg-emerald-400 text-white shadow-success/30' : 'bg-red-500 hover:bg-red-400 text-white shadow-red-500/30'"
+                                    :disabled="!atmAmount || parseInt(atmAmount.replace(/\D/g, '')) <= 0"
+                                    :class="!atmAmount || parseInt(atmAmount.replace(/\D/g, '')) <= 0 ? 'opacity-50 cursor-not-allowed' : ''">
+                                {{ atmMode === 'deposit' ? 'Yatır' : 'Çek' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+        <!-- Error Modal -->
+        <transition name="modal">
+            <div v-if="errorModal.show" class="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-sm" @click="closeErrorModal">
+                <div @click.stop class="bg-surface border border-danger/30 rounded-3xl shadow-2xl w-[450px] overflow-hidden animate-fade-in">
+                    <!-- Modal Header -->
+                    <div class="p-6 border-b border-danger/20 bg-danger/10">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-danger/20 text-danger flex items-center justify-center border border-danger/30">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">{{ errorModal.title }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="p-8">
+                        <p class="text-slate-300 text-center leading-relaxed">{{ errorModal.message }}</p>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="p-6 border-t border-slate-700">
+                        <button @click="closeErrorModal" class="w-full bg-danger hover:bg-red-600 text-white font-bold py-3 rounded-xl transition-all">
+                            Tamam
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 
     <script type="module" src="script.js"></script>
