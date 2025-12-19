@@ -41,7 +41,16 @@ export default {
                     </div>
                 </div>
             </div>
-            <div class="mt-8 text-xs text-slate-500 font-mono">ID: {{ store.user.phone }}</div>
+            <div class="mt-8 text-xs text-slate-500 font-mono flex flex-col items-center gap-2">
+                <div>ID: {{ store.user.phone }}</div>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                    <div class="relative">
+                        <input type="checkbox" v-model="store.pinRequired" class="sr-only peer">
+                        <div class="w-9 h-5 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all border-gray-600 peer-checked:bg-success"></div>
+                    </div>
+                    <span class="text-slate-400 group-hover:text-slate-300 transition-colors">PIN Zorunluluğu</span>
+                </label>
+            </div>
         </section>
     `,
     setup() {
@@ -64,7 +73,7 @@ export default {
         };
 
         const submitLogin = () => {
-            if (store.pinInput === store.user.pin) {
+            if (!store.pinRequired || store.pinInput === store.user.pin) {
                 store.currentView = 'dashboard';
                 store.pinInput = '';
             } else {

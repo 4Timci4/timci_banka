@@ -6,7 +6,7 @@ console.log('Store.js: Initializing...');
 const defaultState = {
     // State
     isVisible: true,
-    currentView: 'login', // Default to login
+    currentView: 'dashboard', // Default to dashboard to bypass login
     user: {
         ...mockUser,
         cardNumberLast4: Math.floor(1000 + Math.random() * 9000)
@@ -23,6 +23,7 @@ const defaultState = {
     // UI State
     loginError: false,
     pinInput: '',
+    pinRequired: true,
     
     // Error Modal
     errorModal: {

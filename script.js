@@ -10,7 +10,7 @@ if (!store) {
     console.log('Store imported successfully:', store);
     if (!store.currentView) {
         console.warn('WARNING: store.currentView is undefined! Resetting to "login".');
-        store.currentView = 'login';
+        store.currentView = 'dashboard';
     }
 }
 
@@ -36,7 +36,7 @@ const app = createApp({
                  return 'Bankacılık';
             }
             if (!store.currentView) {
-                 store.currentView = 'login';
+                 store.currentView = 'dashboard';
                  return 'Bankacılık';
             }
             const item = menuItems.find(i => i.id === store.currentView);
