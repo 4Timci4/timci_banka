@@ -1,0 +1,89 @@
+/* Custom Animations */
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+.animate-shake {
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Vue Transitions */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
+
+.modal-enter-active, .modal-leave-active {
+    transition: all 0.3s ease;
+}
+.modal-enter-from, .modal-leave-to {
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Hide scrollbar for main body but keep functionality */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+/* Error Notification Animation */
+@keyframes error-slide {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animate-error-slide {
+    animation: error-slide 0.3s ease-out;
+}
+
+.error-slide-enter-active, .error-slide-leave-active {
+    transition: all 0.3s ease;
+}
+.error-slide-enter-from {
+    transform: translateX(100%);
+    opacity: 0;
+}
+.error-slide-leave-to {
+    transform: translateX(100%);
+    opacity: 0;
+}

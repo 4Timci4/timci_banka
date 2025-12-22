@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Santos Bank</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#2563eb', // Brighter Blue
+                            light: '#60a5fa',
+                            dark: '#1e3a8a', 
+                            glow: 'rgba(37, 99, 235, 0.5)'
+                        },
+                        accent: {
+                            DEFAULT: '#fbbf24', // Amber 400
+                            glow: 'rgba(251, 191, 36, 0.4)'
+                        },
+                        surface: {
+                            light: '#1e293b', // Slate 800
+                            DEFAULT: '#0f172a', // Slate 900
+                            dark: '#020617', // Slate 950
+                        },
+                        success: '#10b981',
+                        danger: '#ef4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'glow-primary': '0 0 20px -5px var(--tw-colors-primary-glow)',
+                        'glow-accent': '0 0 20px -5px var(--tw-colors-accent-glow)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="w-screen h-screen overflow-hidden bg-transparent flex justify-center items-center font-sans antialiased text-slate-200">
+    
+    <div id="app" v-cloak class="relative w-full h-full flex justify-center items-center">
+        <!-- Background Overlay -->
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm -z-10"></div>
+
+        <!-- Main Container -->
+        <main class="w-[85vw] h-[85vh] max-w-[1600px] max-h-[900px] bg-surface-dark rounded-[2rem] shadow-2xl overflow-hidden relative flex transition-all duration-300 border border-slate-800"
+              :class="{ 'bg-gradient-to-br from-surface-dark to-primary-dark': store.currentView === 'login' }">
+            
+            <!-- VIEW: LOGIN -->
+            <transition name="fade" mode="out-in">
+                <login-view v-if="store.currentView === 'login'" key="login"></login-view>
+
+                <!-- VIEW: DASHBOARD & OTHERS -->
+                <section v-else class="flex w-full h-full bg-surface-dark" key="app">
+                    
+                    <!-- Sidebar -->
+                    <sidebar></sidebar>
+
+                    <!-- Content Area -->
+                    <main class="flex-1 p-10 overflow-y-auto bg-surface-dark relative">
+                        <!-- Top Bar -->
+                        <header class="flex justify-between items-center mb-10 sticky top-0 z-10 py-4 bg-surface-dark/95 backdrop-blur-sm">
+                            <div>
+                                <h2 class="text-3xl font-bold text-white">{{ getPageTitle }}</h2>
+                                <p class="text-slate-400 text-sm mt-1">Hoşgeldin, {{ store.user.name }}</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-2 px-4 py-2 bg-surface border border-slate-700 rounded-full">
+                                    <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+                                    <span class="text-xs font-mono text-slate-300">{{ currentDate }}</span>
+                                </div>
+                            </div>
+                        </header>
+
+                        <!-- Dynamic Content -->
+                        <dashboard-view v-if="store.currentView === 'dashboard'"></dashboard-view>
+                        <transfer-view v-if="store.currentView === 'transfer'"></transfer-view>
+                        <history-view v-if="store.currentView === 'history'"></history-view>
+                        <bills-view v-if="store.currentView === 'bills'"></bills-view>
+                        <savings-view v-if="store.currentView === 'savings'"></savings-view>
+                        <loans-view v-if="store.currentView === 'loans'"></loans-view>
+
+                    </main>
+                </section>
+            </transition>
+        </main>
+
+        <!-- ATM Modal -->
+        <atm-modal></atm-modal>
+
+        <!-- Error Modal -->
+        <error-modal></error-modal>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
