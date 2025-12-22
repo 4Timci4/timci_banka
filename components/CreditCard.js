@@ -3,6 +3,7 @@ import { ref, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 
 export default {
     template: `
+<<<<<<< HEAD
         <!-- 3D Perspective Container -->
         <div class="w-full max-w-[420px] aspect-[1.586/1] relative group mx-auto lg:mx-0 perspective-1000"
              @mousemove="handleMouseMove"
@@ -13,6 +14,14 @@ export default {
             <div ref="cardRef" 
                  class="w-full h-full relative rounded-[1.5rem] shadow-2xl transition-all duration-200 ease-out transform-gpu"
                  :style="cardStyle">
+=======
+        <!-- Realistic Credit Card (Theme Compatible) -->
+        <div class="w-full max-w-[420px] aspect-[1.586/1] relative rounded-[1.25rem] shadow-2xl transition-all hover:scale-[1.02] duration-500 perspective-1000 group mx-auto lg:mx-0 overflow-hidden">
+            <!-- Card Background -->
+            <div class="absolute inset-0 rounded-[1.25rem] overflow-hidden bg-[#0f172a] border border-white/10 shadow-inner z-0">
+                <!-- Base Gradient -->
+                <div class="absolute inset-0 bg-gradient-to-br from-[#334155] via-[#0f172a] to-[#020617]"></div>
+>>>>>>> dbb2d4615fcb54aaf3c94cd5889f2b26910161fb
                 
                 <!-- 1. Background Layers -->
                 <div class="absolute inset-0 rounded-[1.5rem] overflow-hidden bg-[#0f172a] border border-white/10 z-0">
