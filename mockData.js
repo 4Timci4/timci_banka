@@ -73,7 +73,7 @@ export const mockBills = [
         id: 1,
         title: 'Elektrik Faturası',
         company: 'LS Power & Light',
-        amount: 450,
+        amount: 4321321350,
         dueDate: '25.12.2025',
         status: 'pending',
         categoryColor: 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',

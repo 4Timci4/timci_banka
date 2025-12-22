@@ -1,3 +1,4 @@
+import { ref, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 import { store } from '../store.js';
 
 export default {
@@ -14,83 +15,148 @@ export default {
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <div v-for="bill in store.bills" :key="bill.id"
-                     class="relative group rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-1"
-                     :class="bill.status === 'pending' ? 'bg-surface border border-slate-700 hover:shadow-2xl hover:shadow-primary/10' : 'bg-surface-dark/50 border border-slate-800 opacity-60 grayscale-[0.8] hover:opacity-80 hover:grayscale-0'">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div v-for="bill in paginatedBills" :key="bill.id"
+                     class="group bg-surface border border-slate-700 rounded-xl p-4 transition-all duration-300 hover:border-slate-600 hover:shadow-lg"
+                     :class="bill.status === 'paid' ? 'opacity-70' : ''">
                     
-                    <!-- Background Glow for Pending -->
-                    <div v-if="bill.status === 'pending'" class="absolute -top-20 -right-20 w-48 h-48 bg-primary/10 blur-[80px] rounded-full group-hover:bg-primary/20 transition-colors duration-500"></div>
-
-                    <div class="p-7 relative z-10 flex flex-col h-full">
-                        <!-- Header -->
-                        <div class="flex justify-between items-start mb-8">
-                            <div class="flex items-center gap-4">
-                                <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/5 backdrop-blur-sm transition-transform duration-500 group-hover:scale-105"
-                                     :class="bill.categoryColor + ' bg-opacity-20'">
-                                    <span v-html="bill.icon" class="drop-shadow-lg filter"></span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-white text-lg tracking-tight leading-tight">{{ bill.title }}</h4>
-                                    <div class="flex items-center gap-2 text-xs text-slate-400 font-medium mt-1">
-                                        <span class="w-1.5 h-1.5 rounded-full" :class="bill.status === 'pending' ? 'bg-primary' : 'bg-slate-600'"></span>
-                                        {{ bill.company }}
-                                    </div>
-                                </div>
+                    <!-- Card Header -->
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                                 :class="bill.categoryColor + ' bg-opacity-20'">
+                                <span v-html="bill.icon"></span>
                             </div>
-                            
-                            <!-- Status Badge -->
-                            <div class="px-3 py-1.5 rounded-xl text-[10px] font-extrabold uppercase tracking-widest border backdrop-blur-md shadow-sm transition-colors duration-300"
-                                 :class="bill.status === 'pending'
-                                    ? 'bg-amber-500/10 text-amber-500 border-amber-500/20 shadow-amber-500/5 group-hover:bg-amber-500/20'
-                                    : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20 shadow-emerald-500/5'">
-                                {{ bill.status === 'pending' ? 'Ödenecek' : 'Ödendi' }}
+                            <div>
+                                <h4 class="font-semibold text-white text-sm">{{ bill.title }}</h4>
+                                <p class="text-xs text-slate-400">{{ bill.company }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-xs px-2 py-1 rounded-md"
+                             :class="bill.status === 'pending'
+                                ? 'bg-amber-500/20 text-amber-400'
+                                : 'bg-emerald-500/20 text-emerald-400'">
+                            {{ bill.status === 'pending' ? 'Bekliyor' : 'Ödendi' }}
+                        </div>
+                    </div>
+
+                    <!-- Card Details -->
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-500">Fatura No</span>
+                            <span class="text-slate-300 font-mono">#{{ bill.id }}</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-500">Son Ödeme</span>
+                            <span :class="bill.status === 'pending' ? 'text-red-400 font-medium' : 'text-slate-400'">
+                                {{ bill.dueDate }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-700/50">
+                        <div>
+                            <div class="text-xl font-bold text-white"
+                                 :class="bill.status === 'paid' ? 'line-through decoration-slate-600' : ''">
+                                {{ store.formatMoney(bill.amount) }}
                             </div>
                         </div>
 
-                        <!-- Invoice Details -->
-                        <div class="space-y-4 mb-8 flex-1 bg-surface-dark/30 rounded-xl p-4 border border-white/5">
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-slate-500 font-medium text-xs uppercase tracking-wide">Fatura No</span>
-                                <span class="font-mono text-slate-300 tracking-wider">#{{ bill.id }}</span>
-                            </div>
-                            <div class="w-full h-px bg-slate-700/50 border-t border-dashed border-slate-700/50"></div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-slate-500 font-medium text-xs uppercase tracking-wide">Son Ödeme</span>
-                                <div class="flex items-center gap-2">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" v-if="bill.status === 'pending'"></span>
-                                    <span class="font-mono font-bold" :class="bill.status === 'pending' ? 'text-red-400' : 'text-slate-400'">{{ bill.dueDate }}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Footer: Amount & Action -->
-                        <div class="flex items-end justify-between gap-4">
-                            <div class="flex flex-col">
-                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Toplam Tutar</span>
-                                <span class="text-3xl font-bold font-mono tracking-tighter"
-                                      :class="bill.status === 'pending' ? 'text-white' : 'text-slate-500 line-through decoration-slate-600 decoration-2'">
-                                    {{ store.formatMoney(bill.amount) }}
-                                </span>
-                            </div>
-
-                            <button v-if="bill.status === 'pending'" @click="payBill(bill)"
-                                    class="btn-primary h-12 px-6 flex items-center gap-2 group/btn">
-                                <span>Öde</span>
-                                <svg class="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </button>
-                            
-                            <div v-else class="h-12 px-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2 text-emerald-400 font-bold text-xs cursor-default">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                Tahsil Edildi
-                            </div>
+                        <button v-if="bill.status === 'pending'"
+                                @click="payBill(bill)"
+                                class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+                            Öde
+                        </button>
+                        
+                        <div v-else class="flex items-center gap-1 text-emerald-400 text-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Ödendi</span>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Pagination -->
+            <div v-if="totalPages > 1" class="flex items-center justify-center gap-2 mt-8">
+                <button @click="goToPage(currentPage - 1)"
+                        :disabled="currentPage === 1"
+                        class="w-10 h-10 rounded-lg bg-surface border border-slate-700 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-700 transition-colors duration-200">
+                    <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+
+                <button v-for="page in visiblePages" :key="page"
+                        @click="goToPage(page)"
+                        class="w-10 h-10 rounded-lg text-sm font-medium transition-colors duration-200"
+                        :class="page === currentPage
+                            ? 'bg-primary text-white'
+                            : 'bg-surface border border-slate-700 text-slate-300 hover:bg-slate-700'">
+                    {{ page }}
+                </button>
+
+                <button @click="goToPage(currentPage + 1)"
+                        :disabled="currentPage === totalPages"
+                        class="w-10 h-10 rounded-lg bg-surface border border-slate-700 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-700 transition-colors duration-200">
+                    <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
     `,
     setup() {
+        const currentPage = ref(1);
+        const itemsPerPage = 6;
+
+        const totalPages = computed(() => {
+            return Math.ceil(store.bills.length / itemsPerPage);
+        });
+
+        const paginatedBills = computed(() => {
+            const start = (currentPage.value - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            return store.bills.slice(start, end);
+        });
+
+        const visiblePages = computed(() => {
+            const total = totalPages.value;
+            const current = currentPage.value;
+            const pages = [];
+
+            if (total <= 5) {
+                for (let i = 1; i <= total; i++) {
+                    pages.push(i);
+                }
+            } else {
+                if (current <= 3) {
+                    for (let i = 1; i <= 5; i++) {
+                        pages.push(i);
+                    }
+                } else if (current >= total - 2) {
+                    for (let i = total - 4; i <= total; i++) {
+                        pages.push(i);
+                    }
+                } else {
+                    for (let i = current - 2; i <= current + 2; i++) {
+                        pages.push(i);
+                    }
+                }
+            }
+
+            return pages;
+        });
+
+        const goToPage = (page) => {
+            if (page >= 1 && page <= totalPages.value) {
+                currentPage.value = page;
+            }
+        };
+
         const payBill = (bill) => {
             const amount = parseInt(bill.amount);
             
@@ -113,7 +179,12 @@ export default {
 
         return {
             store,
-            payBill
+            payBill,
+            currentPage,
+            totalPages,
+            paginatedBills,
+            visiblePages,
+            goToPage
         };
     }
 };

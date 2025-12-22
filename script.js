@@ -35,40 +35,127 @@ const app = createApp({
 
         // --- NUI Event Listeners ---
         onMounted(() => {
+            // NUI Message Handler
             window.addEventListener('message', (event) => {
                 const item = event.data;
+                
+                // UI Visibility Control
                 if (item.type === 'ui') {
                     store.isVisible = item.status;
+                    // NUI Focus Management
+                    if (item.status) {
+                        setNuiFocus(true, true);
+                    } else {
+                        setNuiFocus(false, false);
+                    }
                 }
+                
+                // Balance Updates
                 if (item.type === 'updateBalance') {
                     store.user.balance = item.balance;
                 }
+                
+                // User Data Updates
                 if (item.type === 'updateUser') {
-                    // Update user info including phone if passed from client
                     store.updateUser(item.userData);
+                }
+                
+                // Transaction Updates
+                if (item.type === 'newTransaction') {
+                    store.addTransaction(item.transaction);
+                }
+                
+                // Account Status Updates
+                if (item.type === 'accountStatus') {
+                    store.user.accountStatus = item.status;
+                }
+                
+                // Nearby Players Update (for transfers)
+                if (item.type === 'updateNearbyPlayers') {
+                    store.nearbyPlayers = item.players;
+                }
+                
+                // Error Handling from Server
+                if (item.type === 'showError') {
+                    store.showError(item.title || 'Hata', item.message || 'Bir hata oluştu');
                 }
             });
 
+            // ESC Key Handler
             window.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    // Close UI in FiveM environment
-                    try {
-                        if (typeof GetParentResourceName !== 'undefined') {
-                            fetch(`https://${GetParentResourceName()}/close`, { method: 'POST' });
-                        }
-                    } catch (error) {
-                        console.warn('Failed to close FiveM UI:', error.message);
-                    }
+                if (e.key === 'Escape' && store.isVisible) {
+                    closeUI();
+                }
+            });
+            
+            // Click outside handler for focus management
+            document.addEventListener('click', () => {
+                if (store.isVisible) {
+                    maintainNuiFocus();
                 }
             });
         });
+
+        // NUI Helper Functions
+        const setNuiFocus = (hasFocus, hasCursor) => {
+            try {
+                if (typeof GetParentResourceName !== 'undefined') {
+                    fetch(`https://${GetParentResourceName()}/setNuiFocus`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ focus: hasFocus, cursor: hasCursor })
+                    });
+                }
+            } catch (error) {
+                console.warn('Failed to set NUI focus:', error.message);
+            }
+        };
+
+        const closeUI = () => {
+            try {
+                if (typeof GetParentResourceName !== 'undefined') {
+                    setNuiFocus(false, false);
+                    fetch(`https://${GetParentResourceName()}/close`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    store.isVisible = false;
+                }
+            } catch (error) {
+                console.warn('Failed to close FiveM UI:', error.message);
+            }
+        };
+
+        const maintainNuiFocus = () => {
+            if (store.isVisible) {
+                setNuiFocus(true, true);
+            }
+        };
+
+        // NUI Callback System
+        const sendNuiCallback = (callback, data = {}) => {
+            try {
+                if (typeof GetParentResourceName !== 'undefined') {
+                    return fetch(`https://${GetParentResourceName()}/${callback}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                }
+            } catch (error) {
+                console.error(`NUI Callback failed for ${callback}:`, error.message);
+                return Promise.reject(error);
+            }
+        };
 
         // Explicitly exposing store to template
         return {
             store,
             getPageTitle,
             currentDate,
-            menuItems
+            menuItems,
+            sendNuiCallback,
+            closeUI
         };
     }
 });

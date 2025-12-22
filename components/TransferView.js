@@ -90,7 +90,7 @@ export default {
             description: ''
         });
 
-        const handleTransfer = () => {
+        const handleTransfer = async () => {
             if (!transferForm.value.phone || !transferForm.value.amount) return;
             
             const amount = parseInt(transferForm.value.amount.replace(/\D/g, ''));
@@ -105,19 +105,46 @@ export default {
                 return;
             }
 
-            // Simulate API call
-            store.user.balance -= amount;
-            store.transactions.unshift({
-                id: Date.now(),
-                type: 'out',
-                title: transferForm.value.description || 'Transfer: ' + transferForm.value.phone,
-                amount: amount,
-                date: new Date().toLocaleDateString('tr-TR')
-            });
+            // FiveM Server Communication
+            try {
+                if (typeof GetParentResourceName !== 'undefined') {
+                    const response = await fetch(`https://${GetParentResourceName()}/transferMoney`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            targetPhone: transferForm.value.phone,
+                            amount: amount,
+                            description: transferForm.value.description || 'Transfer'
+                        })
+                    });
 
-            // Reset form
-            transferForm.value = { phone: '', amount: '', description: '' };
-            store.currentView = 'dashboard';
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Reset form on success
+                        transferForm.value = { phone: '', amount: '', description: '' };
+                        store.currentView = 'dashboard';
+                    } else {
+                        store.showError('Transfer Hatası', result.message || 'Transfer işlemi başarısız');
+                    }
+                } else {
+                    // Development/Test mode - Local simulation
+                    store.user.balance -= amount;
+                    store.addTransaction({
+                        id: Date.now(),
+                        type: 'out',
+                        title: transferForm.value.description || 'Transfer: ' + transferForm.value.phone,
+                        amount: amount,
+                        date: new Date().toLocaleDateString('tr-TR')
+                    });
+                    
+                    transferForm.value = { phone: '', amount: '', description: '' };
+                    store.currentView = 'dashboard';
+                }
+            } catch (error) {
+                console.error('Transfer error:', error);
+                store.showError('Bağlantı Hatası', 'Server ile bağlantı kurulamadı');
+            }
         };
 
         return {
