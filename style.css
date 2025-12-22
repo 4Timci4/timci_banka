@@ -1,3 +1,6 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
 /* Custom Animations */
 @keyframes shake {
     10%, 90% { transform: translate3d(-1px, 0, 0); }

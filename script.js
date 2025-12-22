@@ -11,19 +11,19 @@ try {
 }
 
 // Components
-import LoginView from './components/LoginView.js';
-import SetupPinView from './components/SetupPinView.js';
-import Sidebar from './components/Sidebar.js';
-import DashboardView from './components/DashboardView.js';
-import TransferView from './components/TransferView.js';
-import HistoryView from './components/HistoryView.js';
-import BillsView from './components/BillsView.js';
-import SavingsView from './components/SavingsView.js';
-import LoansView from './components/LoansView.js';
-import SettingsView from './components/SettingsView.js';
-import AtmModal from './components/AtmModal.js';
-import ErrorModal from './components/ErrorModal.js';
-import CreditCard from './components/CreditCard.js';
+import LoginView from './components/LoginView/LoginView.js';
+import SetupPinView from './components/SetupPinView/SetupPinView.js';
+import Sidebar from './components/Sidebar/Sidebar.js';
+import DashboardView from './components/DashboardView/DashboardView.js';
+import TransferView from './components/TransferView/TransferView.js';
+import HistoryView from './components/HistoryView/HistoryView.js';
+import BillsView from './components/BillsView/BillsView.js';
+import SavingsView from './components/SavingsView/SavingsView.js';
+import LoansView from './components/LoansView/LoansView.js';
+import SettingsView from './components/SettingsView/SettingsView.js';
+import AtmModal from './components/AtmModal/AtmModal.js';
+import ErrorModal from './components/ErrorModal/ErrorModal.js';
+import CreditCard from './components/CreditCard/CreditCard.js';
 
 const app = createApp({
     setup() {

@@ -1,103 +1,102 @@
-import { store } from '../store.js';
+import { store } from '../../store.js';
 import { ref, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 
 export default {
     template: `
         <!-- 3D Perspective Container -->
-        <div class="w-full max-w-[420px] aspect-[1.586/1] relative group mx-auto lg:mx-0 perspective-1000"
+        <div class="credit-card-container"
              @mousemove="handleMouseMove"
              @mouseleave="handleMouseLeave"
              @mouseenter="handleMouseEnter">
             
             <!-- Card Element (Rotatable) -->
             <div ref="cardRef" 
-                 class="w-full h-full relative rounded-[1.5rem] shadow-2xl transition-all duration-200 ease-out transform-gpu"
+                 class="credit-card"
                  :style="cardStyle">
                 
                 <!-- 1. Background Layers -->
-                <div class="absolute inset-0 rounded-[1.5rem] overflow-hidden bg-[#0f172a] border border-white/15 z-0">
+                <div class="card-background-layer">
                     <!-- Dynamic Mesh Gradient -->
-                    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-                    <div class="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-gradient-to-br from-emerald-900/40 via-[#0f172a] to-blue-900/40 animate-pulse-slow"></div>
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-[80px] mix-blend-screen"></div>
-                    <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] mix-blend-screen"></div>
+                    <div class="card-noise"></div>
+                    <div class="card-gradient-1"></div>
+                    <div class="card-glow-1"></div>
+                    <div class="card-glow-2"></div>
                     
                     <!-- Glass Reflection (Dynamic) -->
-                    <div class="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/20 pointer-events-none"></div>
+                    <div class="card-glass-reflection"></div>
                 </div>
 
                 <!-- 2. Content Layer -->
-                <div class="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between z-10 text-white select-none">
+                <div class="card-content">
                     
                     <!-- Header: Chip & Bank Logo -->
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center gap-4">
+                    <div class="card-header">
+                        <div class="card-chip-container">
                             <!-- Realistic EMV Chip -->
-                            <div class="w-12 h-9 bg-gradient-to-br from-[#fbbf24] via-[#d97706] to-[#b45309] rounded-[6px] relative overflow-hidden shadow-inner border border-[#78350f]/30">
-                                <svg width="100%" height="100%" viewBox="0 0 48 36" class="opacity-60 mix-blend-overlay">
+                            <div class="card-chip">
+                                <svg width="100%" height="100%" viewBox="0 0 48 36" class="card-chip-svg">
                                     <path d="M0 18H48M16 0V36M32 0V36" stroke="#451a03" stroke-width="1"/>
                                     <rect x="16" y="10" width="16" height="16" rx="4" stroke="#451a03" stroke-width="1"/>
                                 </svg>
                                 <!-- Shine on Chip -->
-                                <div class="absolute inset-0 bg-gradient-to-tr from-white/40 to-transparent opacity-50"></div>
+                                <div class="card-chip-shine"></div>
                             </div>
                             
                             <!-- Contactless Icon -->
-                            <svg class="w-6 h-6 text-white/80 drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="card-contactless-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
                             </svg>
                         </div>
                         
                         <!-- Bank Brand -->
-                        <div class="text-right">
-                            <div class="font-bold italic text-2xl tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 drop-shadow-sm">LS BANK</div>
-                            <div class="text-[10px] uppercase tracking-[0.4em] text-yellow-500/80 font-semibold mt-1">Platinum</div>
+                        <div class="card-brand">
+                            <div class="card-bank-name">LS BANK</div>
+                            <div class="card-tier">Platinum</div>
                         </div>
                     </div>
 
                     <!-- Middle: Balance (Interactive) -->
-                    <div class="mt-2 pl-1 group/balance cursor-pointer w-fit" @click="toggleBalance">
-                        <div class="flex items-center gap-2 text-[10px] text-slate-400 uppercase tracking-widest font-medium mb-1 transition-colors group-hover/balance:text-white">
+                    <div class="card-balance-section group/balance" @click="toggleBalance">
+                        <div class="card-balance-label">
                             <span>Toplam Bakiye</span>
-                            <i :class="showBalance ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-xs opacity-50"></i>
+                            <i :class="showBalance ? 'fas fa-eye-slash' : 'fas fa-eye'" class="card-balance-eye"></i>
                         </div>
-                        <div class="relative overflow-hidden">
-                            <div class="text-2xl sm:text-3xl font-mono font-bold tracking-tight text-white drop-shadow-md transition-all duration-300"
-                                 :class="{'blur-md select-none opacity-50': !showBalance}">
+                        <div class="card-balance-value-wrapper">
+                            <div class="card-balance-value"
+                                 :class="{'hidden': !showBalance}">
                                 {{ store.formatMoney(store.user.balance) }}
                             </div>
                             <!-- Privacy Overlay Text -->
-                            <div v-if="!showBalance" class="absolute inset-0 flex items-center text-sm font-mono tracking-widest text-white/40">
+                            <div v-if="!showBalance" class="card-balance-hidden-text">
                                 ****.***,**
                             </div>
                         </div>
                     </div>
 
                     <!-- Footer: Card Info -->
-                    <div class="flex justify-between items-end">
-                        <div class="flex flex-col gap-3 w-full">
+                    <div class="card-footer">
+                        <div class="card-details-col">
                             <!-- Card Number (Copyable) -->
-                            <div class="relative group/number w-fit cursor-pointer" @click="copyCardNumber">
-                                <div class="font-mono text-lg sm:text-xl text-slate-100 tracking-[0.15em] drop-shadow-md transition-all group-hover/number:text-yellow-400/90" 
-                                     style="word-spacing: 0.3em; text-shadow: 0px 2px 3px rgba(0,0,0,0.5);">
+                            <div class="card-number-wrapper group/number" @click="copyCardNumber">
+                                <div class="card-number">
                                     **** **** **** {{ store.user.cardNumberLast4 }}
                                 </div>
                                 <!-- Copy Tooltip -->
-                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover/number:opacity-100 transition-opacity pointer-events-none whitespace-nowrap backdrop-blur-sm border border-white/15">
+                                <div class="card-copy-tooltip group-hover/number:opacity-100">
                                     {{ copied ? 'Kopyalandı!' : 'Kopyalamak için tıkla' }}
                                 </div>
                             </div>
                             
-                            <div class="flex items-center justify-between w-full pr-4">
+                            <div class="card-info-row">
                                 <div>
-                                    <div class="text-[8px] uppercase text-slate-500 tracking-wider mb-0.5">Kart Sahibi</div>
-                                    <div class="text-xs sm:text-sm uppercase text-slate-200 tracking-widest font-bold drop-shadow-md truncate max-w-[180px]">
+                                    <div class="card-holder-label">Kart Sahibi</div>
+                                    <div class="card-holder-name">
                                         {{ formatName(store.user.name) }}
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <div class="text-[8px] uppercase text-slate-500 tracking-wider mb-0.5">SKT</div>
-                                    <div class="text-xs sm:text-sm font-mono text-slate-200 tracking-widest font-bold drop-shadow-md">12/28</div>
+                                <div class="card-expiry-box">
+                                    <div class="card-expiry-label">SKT</div>
+                                    <div class="card-expiry-date">12/28</div>
                                 </div>
                             </div>
                         </div>
@@ -105,11 +104,11 @@ export default {
                 </div>
 
                 <!-- 3. Glossy Sheen (Interactive) -->
-                <div class="absolute inset-0 rounded-[1.5rem] bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20"
+                <div class="card-sheen"
                      :style="sheenStyle"></div>
                      
                 <!-- 4. Border Glow -->
-                <div class="absolute inset-0 rounded-[1.5rem] ring-1 ring-inset ring-white/10 group-hover:ring-white/20 transition-all duration-500 z-30"></div>
+                <div class="card-border-glow"></div>
             </div>
         </div>
     `,

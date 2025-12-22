@@ -1,0 +1,318 @@
+/* ATM Modal Styles */
+.atm-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(12px);
+}
+
+.atm-modal-container {
+    background-color: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 480px;
+    overflow: hidden;
+    position: relative;
+    animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.atm-modal-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8rem;
+    opacity: 0.2;
+    filter: blur(60px);
+    pointer-events: none;
+    transition: background-color 500ms;
+}
+
+.atm-modal-glow.deposit {
+    background-color: #10b981;
+}
+
+.atm-modal-glow.withdraw {
+    background-color: #ef4444;
+}
+
+.atm-modal-header {
+    position: relative;
+    padding: 2rem 2rem 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+.atm-icon-wrapper {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: background-color 300ms, color 300ms;
+}
+
+.atm-icon-wrapper.deposit {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+}
+
+.atm-icon-wrapper.withdraw {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+}
+
+.atm-icon-large {
+    font-size: 1.5rem;
+}
+
+.atm-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.025em;
+}
+
+.atm-subtitle {
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+
+.atm-close-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    transition: all 150ms;
+}
+
+.atm-close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.atm-modal-body {
+    padding: 2rem 2rem 1rem 2rem;
+    padding-top: 1rem;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.atm-balance-card {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(4px);
+}
+
+.atm-balance-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background-color: #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+}
+
+.atm-balance-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.025em;
+}
+
+.atm-input-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-left: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.atm-input-wrapper {
+    position: relative;
+}
+
+.atm-input {
+    width: 100%;
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 1rem;
+    padding: 1.5rem 1.5rem 1.5rem 3.5rem;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.025em;
+    transition: all 150ms;
+}
+
+.atm-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+    outline: none;
+}
+
+.atm-input:hover {
+    border-color: #475569;
+}
+
+.atm-currency-symbol {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #64748b;
+    transition: color 150ms;
+}
+
+.atm-input-wrapper:focus-within .atm-currency-symbol {
+    color: #2563eb;
+}
+
+.atm-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.atm-quick-btn {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 150ms;
+}
+
+.atm-quick-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.atm-quick-btn:active {
+    transform: scale(0.95);
+}
+
+.atm-actions {
+    display: flex;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+
+.atm-btn-cancel {
+    flex: 1;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 0.75rem;
+    font-weight: 700;
+    color: #94a3b8;
+    transition: all 150ms;
+}
+
+.atm-btn-cancel:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.atm-btn-confirm {
+    flex: 2;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 0.75rem;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 150ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.atm-btn-confirm:hover {
+    transform: translateY(-0.25rem);
+}
+
+.atm-btn-confirm:active {
+    transform: scale(0.95);
+}
+
+.atm-btn-confirm:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+    transform: none;
+}
+
+.atm-btn-confirm.deposit {
+    background-image: linear-gradient(to right, #059669, #10b981);
+}
+
+.atm-btn-confirm.deposit:hover {
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+}
+
+.atm-btn-confirm.withdraw {
+    background-image: linear-gradient(to right, #dc2626, #ef4444);
+}
+
+.atm-btn-confirm.withdraw:hover {
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
+}
+
+/* Modal Transitions */
+.modal-enter-active,
+.modal-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+    opacity: 0;
+}

@@ -1,41 +1,41 @@
 import { ref, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
-import { store } from '../store.js';
+import { store } from '../../store.js';
 
 export default {
     template: `
-        <div class="flex flex-col h-fit p-6 animate-fade-in gap-6 overflow-y-auto custom-scrollbar">
+        <div class="savings-view custom-scrollbar">
             <!-- Header -->
-            <div class="flex items-center justify-between shrink-0">
+            <div class="savings-header">
                 <div>
-                    <h2 class="text-2xl font-bold text-white tracking-tight">Vadeli Hesap</h2>
-                    <p class="text-slate-400 text-sm">Geleceğiniz için birikim yapın</p>
+                    <h2 class="savings-title">Vadeli Hesap</h2>
+                    <p class="savings-subtitle">Geleceğiniz için birikim yapın</p>
                 </div>
-                <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-xl">
-                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                    <span class="text-emerald-400 font-bold text-sm">%{{ store.savingsInterestRate }} Yıllık Faiz</span>
+                <div class="interest-badge">
+                    <div class="interest-dot animate-pulse"></div>
+                    <span class="interest-text">%{{ store.savingsInterestRate }} Yıllık Faiz</span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-fit">
+            <div class="savings-grid">
                 <!-- Left Column: Stats & Info -->
-                <div class="lg:col-span-5 flex flex-col gap-4">
+                <div class="savings-col-left flex flex-col gap-4">
                     <!-- Main Balance Card -->
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-900 p-6 shadow-xl text-white group">
-                        <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                    <div class="balance-card group">
+                        <div class="balance-card-glow"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-4 text-emerald-100/80">
-                                <div class="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+                                <div class="balance-icon-wrapper">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 </div>
                                 <span class="font-medium tracking-wide text-sm uppercase">Toplam Birikim</span>
                             </div>
                             
-                            <div class="text-4xl font-bold font-mono tracking-tight mb-2">
+                            <div class="balance-amount">
                                 {{ store.formatMoney(store.savingsBalance) }}
                             </div>
                             
-                            <div class="flex items-center gap-2 text-sm text-emerald-100/70 bg-black/20 w-fit px-3 py-1 rounded-lg backdrop-blur-sm">
+                            <div class="monthly-return-badge">
                                 <span>Aylık Tahmini Getiri:</span>
                                 <span class="text-white font-bold">+{{ store.formatMoney(monthlyReturn) }}</span>
                             </div>
@@ -43,22 +43,22 @@ export default {
                     </div>
 
                     <!-- Interest Info Card -->
-                    <div class="bg-surface border border-slate-700/60 rounded-2xl p-5 flex-1">
+                    <div class="info-card">
                         <h3 class="text-white font-bold mb-4 flex items-center gap-2">
                             <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             Bilgilendirme
                         </h3>
                         <ul class="space-y-3">
-                            <li class="flex items-start gap-3 text-sm text-slate-400">
-                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div>
+                            <li class="info-list-item">
+                                <div class="info-dot"></div>
                                 <p>Faiz ödemeleri her ayın <span class="text-white font-medium">1'inde</span> hesabınıza otomatik olarak yatırılır.</p>
                             </li>
-                            <li class="flex items-start gap-3 text-sm text-slate-400">
-                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div>
+                            <li class="info-list-item">
+                                <div class="info-dot"></div>
                                 <p>İstediğiniz zaman ceza ödemeden para çekebilir veya yatırabilirsiniz.</p>
                             </li>
-                            <li class="flex items-start gap-3 text-sm text-slate-400">
-                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div>
+                            <li class="info-list-item">
+                                <div class="info-dot"></div>
                                 <p>Yıllık <span class="text-emerald-400 font-bold">%{{ store.savingsInterestRate }}</span> faiz oranı üzerinden günlük bileşik faiz uygulanmaz.</p>
                             </li>
                         </ul>
@@ -66,14 +66,14 @@ export default {
                 </div>
 
                 <!-- Right Column: Actions -->
-                <div class="lg:col-span-7 flex flex-col h-fit">
-                    <div class="bg-surface border border-slate-700/60 rounded-2xl p-1 flex mb-4">
+                <div class="savings-col-right flex flex-col h-fit">
+                    <div class="tab-container">
                         <button 
                             v-for="tab in ['deposit', 'withdraw']" 
                             :key="tab"
                             @click="activeTab = tab; savingsForm.amount = ''"
-                            class="flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
-                            :class="activeTab === tab ? 'bg-slate-700 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'"
+                            class="tab-button"
+                            :class="activeTab === tab ? 'active' : 'inactive'"
                         >
                             <svg v-if="tab === 'deposit'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                             <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
@@ -81,7 +81,7 @@ export default {
                         </button>
                     </div>
 
-                    <div class="bg-surface border border-slate-700/60 rounded-2xl p-6 flex-1 flex flex-col">
+                    <div class="action-card">
                         <div class="mb-6">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-slate-400 text-xs font-bold uppercase tracking-wider">İşlem Tutarı</label>
@@ -90,24 +90,24 @@ export default {
                                 </span>
                             </div>
                             
-                            <div class="relative group">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-mono text-lg">$</span>
+                            <div class="amount-input-wrapper group">
+                                <span class="amount-currency-symbol">$</span>
                                 <input 
                                     type="text" 
                                     v-model="savingsForm.amount"
                                     @input="formatInput"
                                     placeholder="0"
-                                    class="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-4 pl-8 pr-4 text-2xl font-bold text-white font-mono focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all placeholder:text-slate-700"
+                                    class="amount-input"
                                 >
                             </div>
 
                             <!-- Quick Amounts -->
-                            <div class="grid grid-cols-4 gap-2 mt-3">
+                            <div class="quick-amount-grid">
                                 <button 
                                     v-for="percent in [10, 25, 50, 100]" 
                                     :key="percent"
                                     @click="setPercentage(percent)"
-                                    class="py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-slate-300 transition-colors"
+                                    class="quick-amount-btn"
                                 >
                                     %{{ percent }}
                                 </button>
@@ -115,7 +115,7 @@ export default {
                         </div>
 
                         <!-- Simulation / Preview -->
-                        <div v-if="previewAmount > 0" class="mb-6 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 animate-fade-in">
+                        <div v-if="previewAmount > 0" class="preview-box animate-fade-in">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-slate-400 text-sm">İşlem Sonrası Bakiye</span>
                                 <span class="text-white font-mono font-bold">{{ store.formatMoney(projectedBalance) }}</span>
@@ -135,10 +135,8 @@ export default {
                             <button 
                                 @click="handleTransaction"
                                 :disabled="!isValidAmount"
-                                class="w-full py-4 rounded-xl font-bold text-lg shadow-lg transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                                :class="activeTab === 'deposit' 
-                                    ? 'bg-emerald-500 hover:bg-emerald-400 text-white shadow-emerald-500/20' 
-                                    : 'bg-slate-700 hover:bg-slate-600 text-white hover:text-red-400'"
+                                class="action-btn"
+                                :class="activeTab === 'deposit' ? 'deposit' : 'withdraw'"
                             >
                                 <span v-if="activeTab === 'deposit'">Yatırımı Onayla</span>
                                 <span v-else>Çekimi Onayla</span>
