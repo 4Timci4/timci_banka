@@ -7,7 +7,7 @@ export default {
             <!-- Left Column: Transfer Form (7 cols) -->
             <div class="lg:col-span-7 flex flex-col gap-6">
                 <!-- Main Card -->
-                <div class="bg-surface-dark/80 backdrop-blur-md p-8 rounded-[2rem] shadow-2xl border border-white/5 relative overflow-hidden flex flex-col h-fit">
+                <div class="bg-surface-dark/80 backdrop-blur-md p-8 rounded-[2rem] shadow-2xl border border-white/10 relative overflow-hidden flex flex-col h-fit">
                     <!-- Decorative Background -->
                     <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
                     <div class="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
@@ -39,7 +39,7 @@ export default {
                             </label>
                             <div class="relative transition-all duration-300 transform group-focus-within:scale-[1.02]">
                                 <input type="text" v-model="transferForm.phone" placeholder="555-0100" maxlength="10" 
-                                       class="w-full pl-12 pr-4 py-4 rounded-xl bg-black/20 border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 font-mono text-lg shadow-inner">
+                                       class="w-full pl-12 pr-4 py-4 rounded-xl bg-black/20 border border-white/15 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 font-mono text-lg shadow-inner">
                                 <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors">
                                     <i class="fas fa-user"></i>
                                 </div>
@@ -54,11 +54,11 @@ export default {
                             <div class="relative transition-all duration-300 transform group-focus-within:scale-[1.02]">
                                 <input type="text" v-model="transferForm.amount" placeholder="0"
                                        @input="formatAmountInput"
-                                       class="w-full pl-12 pr-24 py-4 rounded-xl bg-black/20 border border-white/10 focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 font-mono text-xl font-bold shadow-inner tracking-wide">
+                                       class="w-full pl-12 pr-24 py-4 rounded-xl bg-black/20 border border-white/15 focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 font-mono text-xl font-bold shadow-inner tracking-wide">
                                 <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-accent transition-colors text-lg">
                                     <i class="fas fa-dollar-sign"></i>
                                 </div>
-                                <button class="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/5 rounded-lg text-[10px] font-bold text-accent hover:text-white transition-all active:scale-95"
+                                <button class="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-[10px] font-bold text-accent hover:text-white transition-all active:scale-95"
                                         @click="setMaxAmount">
                                     TÜMÜ
                                 </button>
@@ -68,7 +68,7 @@ export default {
                             <div class="flex gap-2 mt-2 overflow-x-auto pb-1 scrollbar-hide">
                                 <button v-for="amount in quickAmounts" :key="amount"
                                         @click="setAmount(amount)"
-                                        class="px-3 py-1 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 text-[10px] font-mono text-slate-300 transition-all active:scale-95 whitespace-nowrap">
+                                        class="px-3 py-1 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/15 text-[10px] font-mono text-slate-300 transition-all active:scale-95 whitespace-nowrap">
                                     \${{ amount.toLocaleString() }}
                                 </button>
                             </div>
@@ -81,7 +81,7 @@ export default {
                             </label>
                             <div class="relative transition-all duration-300 transform group-focus-within:scale-[1.02]">
                                 <input type="text" v-model="transferForm.description" placeholder="Ödeme notu..." 
-                                       class="w-full pl-12 pr-4 py-4 rounded-xl bg-black/20 border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 shadow-inner">
+                                       class="w-full pl-12 pr-4 py-4 rounded-xl bg-black/20 border border-white/15 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 shadow-inner">
                                 <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors">
                                     <i class="fas fa-pen"></i>
                                 </div>
@@ -108,8 +108,8 @@ export default {
             <div class="lg:col-span-5 flex flex-col gap-6">
                 
                 <!-- Nearby Players -->
-                <div class="bg-surface-dark/80 backdrop-blur-md rounded-[2rem] shadow-xl border border-white/5 flex flex-col overflow-hidden relative h-fit">
-                    <div class="p-6 border-b border-white/5 bg-black/20">
+                <div class="bg-surface-dark/80 backdrop-blur-md rounded-[2rem] shadow-xl border border-white/10 flex flex-col overflow-hidden relative h-fit">
+                    <div class="p-6 border-b border-white/10 bg-black/20">
                         <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2">
                             <i class="fas fa-map-marker-alt text-accent"></i>
                             Yakındaki Kişiler
@@ -124,11 +124,11 @@ export default {
 
                         <div v-for="player in paginatedPlayers" :key="player.id"
                              @click="selectContact(player)"
-                             class="flex items-center p-3 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.08] hover:border-white/10 cursor-pointer transition-all group active:scale-[0.98]">
+                             class="flex items-center p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] hover:border-white/15 cursor-pointer transition-all group active:scale-[0.98]">
                             
                             <!-- Avatar -->
                             <div class="relative">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center font-bold text-lg text-slate-300 shadow-inner group-hover:text-white transition-colors border border-white/5">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center font-bold text-lg text-slate-300 shadow-inner group-hover:text-white transition-colors border border-white/10">
                                     {{ player.name.charAt(0).toUpperCase() }}
                                 </div>
                                 <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-success border-2 border-surface-dark rounded-full shadow-sm"></div>
@@ -138,7 +138,7 @@ export default {
                             <div class="flex-1 ml-4 overflow-hidden">
                                 <div class="font-bold text-slate-200 group-hover:text-primary-light transition-colors truncate">{{ player.name }}</div>
                                 <div class="flex items-center gap-2 mt-0.5">
-                                    <span class="text-[10px] text-slate-400 font-mono bg-black/30 px-1.5 py-0.5 rounded border border-white/5">
+                                    <span class="text-[10px] text-slate-400 font-mono bg-black/30 px-1.5 py-0.5 rounded border border-white/10">
                                         {{ player.phone }}
                                     </span>
                                     <span class="text-[10px] text-slate-500">Mesafe: Yakın</span>
@@ -153,7 +153,7 @@ export default {
                     </div>
 
                     <!-- Pagination Controls -->
-                    <div v-if="totalPages > 1" class="p-4 border-t border-white/5 bg-black/20 flex items-center justify-between">
+                    <div v-if="totalPages > 1" class="p-4 border-t border-white/10 bg-black/20 flex items-center justify-between">
                         <button @click="prevPage" :disabled="currentPage === 1"
                                 class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
                             <i class="fas fa-chevron-left text-xs"></i>

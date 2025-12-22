@@ -19,7 +19,7 @@ export default {
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <!-- Deposit -->
                         <button @click="openAtmModal('deposit')" 
-                                class="group relative overflow-hidden bg-surface-dark/80 backdrop-blur-sm p-4 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all duration-300 shadow-lg hover:shadow-emerald-500/10 flex flex-col items-center justify-center gap-3 h-32">
+                                class="group relative overflow-hidden bg-surface-dark/80 backdrop-blur-sm p-4 rounded-2xl border border-white/10 hover:border-emerald-500/30 transition-all duration-300 shadow-lg hover:shadow-emerald-500/10 flex flex-col items-center justify-center gap-3 h-32">
                             <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all duration-300 border border-emerald-500/20 shadow-inner relative z-10">
                                 <i class="fas fa-arrow-down text-xl"></i>
@@ -29,7 +29,7 @@ export default {
 
                         <!-- Withdraw -->
                         <button @click="openAtmModal('withdraw')" 
-                                class="group relative overflow-hidden bg-surface-dark/80 backdrop-blur-sm p-4 rounded-2xl border border-white/5 hover:border-red-500/30 transition-all duration-300 shadow-lg hover:shadow-red-500/10 flex flex-col items-center justify-center gap-3 h-32">
+                                class="group relative overflow-hidden bg-surface-dark/80 backdrop-blur-sm p-4 rounded-2xl border border-white/10 hover:border-red-500/30 transition-all duration-300 shadow-lg hover:shadow-red-500/10 flex flex-col items-center justify-center gap-3 h-32">
                             <div class="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:bg-red-500/20 transition-all duration-300 border border-red-500/20 shadow-inner relative z-10">
                                 <i class="fas fa-arrow-up text-xl"></i>
@@ -39,7 +39,7 @@ export default {
                         
                         <!-- Transfer -->
                         <button @click="store.currentView = 'transfer'" 
-                                class="group relative overflow-hidden bg-surface-dark/80 backdrop-blur-sm p-4 rounded-2xl border border-white/5 hover:border-blue-500/30 transition-all duration-300 shadow-lg hover:shadow-blue-500/10 flex flex-col items-center justify-center gap-3 h-32">
+                                class="group relative overflow-hidden bg-surface-dark/80 backdrop-blur-sm p-4 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-all duration-300 shadow-lg hover:shadow-blue-500/10 flex flex-col items-center justify-center gap-3 h-32">
                             <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-300 border border-blue-500/20 shadow-inner relative z-10">
                                 <i class="fas fa-paper-plane text-xl"></i>
@@ -49,7 +49,7 @@ export default {
                         
                         <!-- Loans -->
                         <button @click="store.currentView = 'loans'" 
-                                class="group relative overflow-hidden bg-surface-dark/80 backdrop-blur-sm p-4 rounded-2xl border border-white/5 hover:border-accent/30 transition-all duration-300 shadow-lg hover:shadow-accent/10 flex flex-col items-center justify-center gap-3 h-32">
+                                class="group relative overflow-hidden bg-surface-dark/80 backdrop-blur-sm p-4 rounded-2xl border border-white/10 hover:border-accent/30 transition-all duration-300 shadow-lg hover:shadow-accent/10 flex flex-col items-center justify-center gap-3 h-32">
                             <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="w-12 h-12 bg-accent/10 text-accent rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:bg-accent/20 transition-all duration-300 border border-accent/20 shadow-inner relative z-10">
                                 <i class="fas fa-hand-holding-dollar text-xl"></i>
@@ -62,7 +62,7 @@ export default {
 
             <!-- Right Column: Recent Activity -->
             <div class="col-span-12 lg:col-span-4">
-                <div class="bg-surface-dark/80 backdrop-blur-md p-6 rounded-[2rem] border border-white/5 shadow-xl flex flex-col h-full relative overflow-hidden">
+                <div class="bg-surface-dark/80 backdrop-blur-md p-6 rounded-[2rem] border border-white/10 shadow-xl flex flex-col h-full relative overflow-hidden">
                     <!-- Header -->
                     <div class="flex justify-between items-center mb-6 shrink-0 relative z-10">
                         <h3 class="text-lg font-bold text-white flex items-center gap-2">
@@ -83,7 +83,7 @@ export default {
                         </div>
 
                         <div v-for="t in store.transactions.slice(0, 6)" :key="t.id" 
-                             class="flex items-center justify-between p-3 rounded-xl border border-transparent hover:bg-white/5 hover:border-white/5 transition-all group cursor-default">
+                             class="flex items-center justify-between p-3 rounded-xl border border-transparent hover:bg-white/5 hover:border-white/10 transition-all group cursor-default">
                             
                             <div class="flex items-center gap-3 min-w-0">
                                 <div class="w-10 h-10 rounded-xl flex items-center justify-center border transition-all shrink-0 shadow-sm"

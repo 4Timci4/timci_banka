@@ -15,7 +15,7 @@ export default {
                  :style="cardStyle">
                 
                 <!-- 1. Background Layers -->
-                <div class="absolute inset-0 rounded-[1.5rem] overflow-hidden bg-[#0f172a] border border-white/10 z-0">
+                <div class="absolute inset-0 rounded-[1.5rem] overflow-hidden bg-[#0f172a] border border-white/15 z-0">
                     <!-- Dynamic Mesh Gradient -->
                     <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
                     <div class="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-gradient-to-br from-emerald-900/40 via-[#0f172a] to-blue-900/40 animate-pulse-slow"></div>
@@ -83,7 +83,7 @@ export default {
                                     **** **** **** {{ store.user.cardNumberLast4 }}
                                 </div>
                                 <!-- Copy Tooltip -->
-                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover/number:opacity-100 transition-opacity pointer-events-none whitespace-nowrap backdrop-blur-sm border border-white/10">
+                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover/number:opacity-100 transition-opacity pointer-events-none whitespace-nowrap backdrop-blur-sm border border-white/15">
                                     {{ copied ? 'Kopyalandı!' : 'Kopyalamak için tıkla' }}
                                 </div>
                             </div>

@@ -18,7 +18,7 @@ export default {
                 
                 <!-- Filter & Actions -->
                 <div class="flex items-center gap-3">
-                    <div class="bg-black/20 p-1 rounded-xl border border-white/5 flex items-center">
+                    <div class="bg-black/20 p-1 rounded-xl border border-white/10 flex items-center">
                         <button @click="setFilter('all')"
                                 class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300"
                                 :class="filter === 'all' ? 'bg-white/10 text-white shadow-sm' : 'text-slate-500 hover:text-slate-300'">
@@ -43,7 +43,7 @@ export default {
             <!-- Bills Grid -->
             <div class="overflow-y-auto custom-scrollbar pr-2 -mr-2 mb-4">
                 <div v-if="filteredBills.length === 0" class="flex flex-col items-center justify-center py-12 text-slate-500 gap-3">
-                    <div class="w-16 h-16 rounded-full bg-white/5 border border-white/10 border-dashed flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full bg-white/5 border border-white/15 border-dashed flex items-center justify-center">
                         <i class="fas fa-clipboard-check text-2xl opacity-50"></i>
                     </div>
                     <span class="text-sm font-medium">Görüntülenecek fatura bulunmuyor</span>
@@ -51,7 +51,7 @@ export default {
 
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 pb-4">
                     <div v-for="bill in paginatedBills" :key="bill.id"
-                         class="group bg-surface-dark/80 backdrop-blur-sm border border-white/5 rounded-2xl p-5 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.02] relative overflow-hidden"
+                         class="group bg-surface-dark/80 backdrop-blur-sm border border-white/10 rounded-2xl p-5 transition-all duration-300 hover:border-white/15 hover:bg-white/[0.02] relative overflow-hidden"
                          :class="bill.status === 'paid' ? 'opacity-60 grayscale-[0.5]' : 'hover:shadow-xl hover:shadow-black/20'">
                         
                         <!-- Status Stripe -->
@@ -61,7 +61,7 @@ export default {
                         <!-- Card Header -->
                         <div class="flex items-start justify-between mb-4 pl-2">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shadow-inner border border-white/5"
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shadow-inner border border-white/10"
                                      :class="getCategoryStyle(bill.icon).bg">
                                     <span v-html="bill.icon" :class="getCategoryStyle(bill.icon).text"></span>
                                 </div>
@@ -83,11 +83,11 @@ export default {
 
                         <!-- Card Details -->
                         <div class="grid grid-cols-2 gap-2 mb-4 pl-2">
-                            <div class="bg-black/20 rounded-lg p-2 border border-white/5">
+                            <div class="bg-black/20 rounded-lg p-2 border border-white/10">
                                 <span class="text-[9px] text-slate-500 uppercase font-bold block mb-0.5">Fatura No</span>
                                 <span class="text-xs text-slate-300 font-mono">#{{ bill.id }}</span>
                             </div>
-                            <div class="bg-black/20 rounded-lg p-2 border border-white/5">
+                            <div class="bg-black/20 rounded-lg p-2 border border-white/10">
                                 <span class="text-[9px] text-slate-500 uppercase font-bold block mb-0.5">Son Ödeme</span>
                                 <span class="text-xs font-mono" :class="bill.status === 'pending' ? 'text-red-400 font-bold' : 'text-slate-400'">
                                     {{ bill.dueDate }}
@@ -96,7 +96,7 @@ export default {
                         </div>
 
                         <!-- Card Footer -->
-                        <div class="flex items-center justify-between pt-3 border-t border-white/5 pl-2">
+                        <div class="flex items-center justify-between pt-3 border-t border-white/10 pl-2">
                             <div>
                                 <div class="text-[10px] text-slate-500 uppercase font-bold mb-0.5">Tutar</div>
                                 <div class="text-xl font-bold text-white font-mono tracking-tight"
@@ -122,7 +122,7 @@ export default {
             </div>
 
             <!-- Pagination -->
-            <div v-if="totalPages > 1" class="pt-2 border-t border-white/5 flex items-center justify-center gap-4 shrink-0 mt-auto">
+            <div v-if="totalPages > 1" class="pt-2 border-t border-white/10 flex items-center justify-center gap-4 shrink-0 mt-auto">
                 <button @click="prevPage" :disabled="currentPage === 1"
                         class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
                     <i class="fas fa-chevron-left text-xs"></i>

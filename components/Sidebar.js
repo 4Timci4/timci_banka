@@ -3,10 +3,10 @@ import { menuItems } from '../constants/menuItems.js';
 
 export default {
     template: `
-        <aside class="w-80 bg-surface-dark/95 backdrop-blur-xl border-r border-white/5 p-6 flex flex-col shrink-0 relative z-20 h-full">
+        <aside class="w-80 bg-surface-dark/95 backdrop-blur-xl border-r border-white/10 p-6 flex flex-col shrink-0 relative z-20 h-full">
             <!-- Brand -->
             <div class="mb-10 px-2 flex items-center gap-4 group cursor-default">
-                <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform duration-300 border border-white/10">
+                <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform duration-300 border border-white/15">
                     <i class="fas fa-university text-xl"></i>
                 </div>
                 <div>
@@ -46,10 +46,10 @@ export default {
             </nav>
 
             <!-- User Profile (Bottom) -->
-            <div class="mt-6 pt-6 border-t border-white/5">
-                <div class="bg-black/20 rounded-2xl p-3 border border-white/5 hover:border-white/10 transition-colors group relative overflow-hidden">
+            <div class="mt-6 pt-6 border-t border-white/10">
+                <div class="bg-black/20 rounded-2xl p-3 border border-white/10 hover:border-white/15 transition-colors group relative overflow-hidden">
                     <div class="flex items-center gap-3 relative z-10">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-lg font-bold text-white border border-white/10 shadow-inner">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-lg font-bold text-white border border-white/15 shadow-inner">
                             {{ store.user.name.charAt(0) }}
                         </div>
                         <div class="flex-1 min-w-0">

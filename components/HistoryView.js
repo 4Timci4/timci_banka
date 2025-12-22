@@ -3,14 +3,14 @@ import { store } from '../store.js';
 
 export default {
     template: `
-        <div class="bg-surface-dark/80 backdrop-blur-md rounded-[2rem] shadow-2xl border border-white/5 overflow-hidden animate-fade-in flex flex-col h-fit relative">
+        <div class="bg-surface-dark/80 backdrop-blur-md rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden animate-fade-in flex flex-col h-fit relative">
             <!-- Decorative Background -->
             <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
             <!-- Header -->
-            <div class="p-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
+            <div class="p-8 border-b border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-white shadow-lg border border-white/10">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-white shadow-lg border border-white/15">
                         <i class="fas fa-history text-xl"></i>
                     </div>
                     <div>
@@ -20,7 +20,7 @@ export default {
                 </div>
 
                 <!-- Filters -->
-                <div class="flex bg-black/20 p-1.5 rounded-xl border border-white/5">
+                <div class="flex bg-black/20 p-1.5 rounded-xl border border-white/10">
                     <button @click="setFilter('all')"
                             class="px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-2"
                             :class="transactionFilter === 'all' ? 'bg-white/10 text-white shadow-sm' : 'text-slate-500 hover:text-slate-300'">
@@ -46,7 +46,7 @@ export default {
             <div class="flex-1 overflow-y-auto custom-scrollbar relative z-10 min-h-[400px]">
                 <!-- Empty State -->
                 <div v-if="filteredTransactions.length === 0" class="flex flex-col items-center justify-center h-full py-20 text-slate-500 gap-4">
-                    <div class="w-16 h-16 rounded-full bg-white/5 border border-white/10 border-dashed flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full bg-white/5 border border-white/15 border-dashed flex items-center justify-center">
                         <i class="fas fa-search text-2xl opacity-30"></i>
                     </div>
                     <div class="text-center">
@@ -58,7 +58,7 @@ export default {
                 <!-- Transactions List -->
                 <div v-else class="p-3 space-y-1.5">
                     <div v-for="t in paginatedTransactions" :key="t.id"
-                         class="group flex items-center justify-between p-3 rounded-xl border border-transparent hover:bg-white/[0.03] hover:border-white/5 transition-all duration-300 cursor-default relative overflow-hidden">
+                         class="group flex items-center justify-between p-3 rounded-xl border border-transparent hover:bg-white/[0.03] hover:border-white/10 transition-all duration-300 cursor-default relative overflow-hidden">
                         
                         <!-- Hover Glow -->
                         <div class="absolute inset-0 bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
@@ -99,14 +99,14 @@ export default {
             </div>
             
             <!-- Pagination Controls -->
-            <div v-if="totalPages > 1" class="border-t border-white/5 p-4 bg-black/20 backdrop-blur-md flex items-center justify-between relative z-20">
+            <div v-if="totalPages > 1" class="border-t border-white/10 p-4 bg-black/20 backdrop-blur-md flex items-center justify-between relative z-20">
                 <div class="text-xs text-slate-500 font-medium pl-2">
                     Toplam <span class="text-white font-bold">{{ filteredTransactions.length }}</span> işlem
                 </div>
                 
                 <div class="flex items-center gap-2">
                     <button @click="prevPage" :disabled="currentPage === 1"
-                            class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95">
+                            class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95">
                         <i class="fas fa-chevron-left text-xs"></i>
                     </button>
                     
@@ -117,7 +117,7 @@ export default {
                     </div>
 
                     <button @click="nextPage" :disabled="currentPage === totalPages"
-                            class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95">
+                            class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95">
                         <i class="fas fa-chevron-right text-xs"></i>
                     </button>
                 </div>

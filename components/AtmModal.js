@@ -4,7 +4,7 @@ export default {
     template: `
         <transition name="modal">
             <div v-if="store.showAtmModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/90 backdrop-blur-md" @click="closeAtmModal">
-                <div @click.stop class="bg-surface-dark border border-white/5 rounded-[2.5rem] shadow-2xl w-[480px] overflow-hidden animate-scale-in relative">
+                <div @click.stop class="bg-surface-dark border border-white/10 rounded-[2.5rem] shadow-2xl w-[480px] overflow-hidden animate-scale-in relative">
                     
                     <!-- Dynamic Background Glow -->
                     <div class="absolute top-0 left-0 w-full h-32 opacity-20 blur-[60px] pointer-events-none transition-colors duration-500"
@@ -13,7 +13,7 @@ export default {
                     <!-- Header -->
                     <div class="relative p-8 pb-4 flex items-center justify-between z-10">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg border border-white/10 transition-colors duration-300"
+                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg border border-white/15 transition-colors duration-300"
                                  :class="store.atmMode === 'deposit' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'">
                                 <i class="fas text-2xl" :class="store.atmMode === 'deposit' ? 'fa-arrow-down' : 'fa-arrow-up'"></i>
                             </div>
@@ -31,7 +31,7 @@ export default {
                     <div class="p-8 pt-4 space-y-6 relative z-10">
                         
                         <!-- Balance Card -->
-                        <div class="bg-black/30 border border-white/5 rounded-2xl p-5 flex items-center justify-between backdrop-blur-sm">
+                        <div class="bg-black/30 border border-white/10 rounded-2xl p-5 flex items-center justify-between backdrop-blur-sm">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400">
                                     <i class="fas fa-wallet"></i>
@@ -58,7 +58,7 @@ export default {
                         <div class="grid grid-cols-4 gap-3">
                             <button v-for="amount in [100, 500, 1000, 5000]" :key="amount"
                                     @click="store.atmAmount = amount.toLocaleString('en-US')"
-                                    class="py-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold font-mono transition-all active:scale-95">
+                                    class="py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold font-mono transition-all active:scale-95">
                                 \${{ amount.toLocaleString('en-US') }}
                             </button>
                         </div>
