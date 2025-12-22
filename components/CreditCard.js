@@ -3,7 +3,7 @@ import { store } from '../store.js';
 export default {
     template: `
         <!-- Realistic Credit Card (Theme Compatible) -->
-        <div class="w-full max-w-[420px] aspect-[1.586/1] relative rounded-[1.25rem] shadow-2xl transition-all hover:scale-[1.02] duration-500 perspective-1000 group mx-auto lg:mx-0">
+        <div class="w-full max-w-[420px] aspect-[1.586/1] relative rounded-[1.25rem] shadow-2xl transition-all hover:scale-[1.02] duration-500 perspective-1000 group mx-auto lg:mx-0 overflow-hidden">
             <!-- Card Background -->
             <div class="absolute inset-0 rounded-[1.25rem] overflow-hidden bg-[#0f172a] border border-white/10 shadow-inner z-0">
                 <!-- Base Gradient -->
