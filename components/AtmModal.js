@@ -3,69 +3,83 @@ import { store } from '../store.js';
 export default {
     template: `
         <transition name="modal">
-            <div v-if="store.showAtmModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-sm" @click="closeAtmModal">
-                <div @click.stop class="bg-surface border border-slate-700 rounded-3xl shadow-2xl w-[500px] overflow-hidden animate-fade-in">
-                    <!-- Modal Header -->
-                    <div class="p-6 border-b border-slate-700 flex items-center justify-between" :class="store.atmMode === 'deposit' ? 'bg-success/10' : 'bg-red-500/10'">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-xl flex items-center justify-center" :class="store.atmMode === 'deposit' ? 'bg-success/20 text-success border border-success/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'">
-                                <svg v-if="store.atmMode === 'deposit'" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+            <div v-if="store.showAtmModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/90 backdrop-blur-md" @click="closeAtmModal">
+                <div @click.stop class="bg-surface-dark border border-white/5 rounded-[2.5rem] shadow-2xl w-[480px] overflow-hidden animate-scale-in relative">
+                    
+                    <!-- Dynamic Background Glow -->
+                    <div class="absolute top-0 left-0 w-full h-32 opacity-20 blur-[60px] pointer-events-none transition-colors duration-500"
+                         :class="store.atmMode === 'deposit' ? 'bg-emerald-500' : 'bg-red-500'"></div>
+
+                    <!-- Header -->
+                    <div class="relative p-8 pb-4 flex items-center justify-between z-10">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg border border-white/10 transition-colors duration-300"
+                                 :class="store.atmMode === 'deposit' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'">
+                                <i class="fas text-2xl" :class="store.atmMode === 'deposit' ? 'fa-arrow-down' : 'fa-arrow-up'"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-white">{{ store.atmMode === 'deposit' ? 'Para Yatır' : 'Para Çek' }}</h3>
-                                <p class="text-xs text-slate-400">ATM İşlemi</p>
+                                <h3 class="text-2xl font-bold text-white tracking-tight">{{ store.atmMode === 'deposit' ? 'Para Yatır' : 'Para Çek' }}</h3>
+                                <p class="text-sm text-slate-400">ATM İşlemi</p>
                             </div>
                         </div>
-                        <button @click="closeAtmModal" class="text-slate-400 hover:text-white transition-colors p-2">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        <button @click="closeAtmModal" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                            <i class="fas fa-times"></i>
                         </button>
                     </div>
 
-                    <!-- Modal Body -->
-                    <div class="p-8 space-y-6">
-                        <!-- Current Balance Display -->
-                        <div class="bg-surface-dark/50 border border-slate-700 rounded-2xl p-4 flex justify-between items-center">
-                            <span class="text-sm text-slate-400">Mevcut Bakiye</span>
-                            <span class="text-2xl font-bold text-white font-mono">{{ store.formatMoney(store.user.balance) }}</span>
+                    <!-- Body -->
+                    <div class="p-8 pt-4 space-y-6 relative z-10">
+                        
+                        <!-- Balance Card -->
+                        <div class="bg-black/30 border border-white/5 rounded-2xl p-5 flex items-center justify-between backdrop-blur-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                                <span class="text-sm font-medium text-slate-300">Mevcut Bakiye</span>
+                            </div>
+                            <span class="text-2xl font-bold text-white font-mono tracking-tight">{{ store.formatMoney(store.user.balance) }}</span>
                         </div>
 
                         <!-- Amount Input -->
-                        <div class="group">
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+                        <div class="space-y-3">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">
                                 {{ store.atmMode === 'deposit' ? 'Yatırılacak Tutar' : 'Çekilecek Tutar' }}
                             </label>
-                            <div class="relative">
+                            <div class="relative group">
                                 <input type="text" v-model="store.atmAmount" placeholder="0"
                                        @input="store.atmAmount = store.formatAmount(store.atmAmount)"
-                                       class="input-primary pl-12 text-3xl font-bold text-center py-6">
-                                <span class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-2xl">$</span>
+                                       class="w-full bg-surface border border-slate-700 rounded-2xl py-6 pl-14 pr-6 text-4xl font-bold text-white placeholder-slate-700 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-mono tracking-tight text-center group-hover:border-slate-600">
+                                <span class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl font-bold text-slate-500 transition-colors group-focus-within:text-primary">$</span>
                             </div>
                         </div>
 
-                        <!-- Quick Amount Buttons -->
+                        <!-- Quick Amounts -->
                         <div class="grid grid-cols-4 gap-3">
                             <button v-for="amount in [100, 500, 1000, 5000]" :key="amount"
                                     @click="store.atmAmount = amount.toLocaleString('en-US')"
-                                    class="py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-slate-300 hover:text-white transition-all text-sm font-bold">
+                                    class="py-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold font-mono transition-all active:scale-95">
                                 \${{ amount.toLocaleString('en-US') }}
                             </button>
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="flex gap-4 pt-4">
+                        <div class="flex gap-4 pt-2">
                             <button @click="closeAtmModal"
-                                    class="flex-1 py-4 bg-surface-dark border border-slate-700 text-slate-300 hover:text-white rounded-xl transition-all font-bold">
+                                    class="flex-1 py-4 rounded-xl font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all">
                                 İptal
                             </button>
                             <button @click="handleAtmTransaction"
-                                    class="flex-1 py-4 rounded-xl font-bold transition-all hover:-translate-y-1 active:scale-95 shadow-lg"
+                                    class="flex-[2] py-4 rounded-xl font-bold text-white shadow-lg transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
                                     :class="[
-                                        store.atmMode === 'deposit' ? 'bg-success hover:bg-emerald-400 text-white shadow-success/30' : 'bg-red-500 hover:bg-red-400 text-white shadow-red-500/30',
-                                        (!store.atmAmount || parseInt(store.atmAmount.replace(/\D/g, '')) <= 0) ? 'opacity-50 cursor-not-allowed' : ''
+                                        store.atmMode === 'deposit' 
+                                            ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 hover:shadow-emerald-500/30' 
+                                            : 'bg-gradient-to-r from-red-600 to-red-500 hover:shadow-red-500/30',
+                                        (!store.atmAmount || parseInt(store.atmAmount.replace(/\D/g, '')) <= 0) ? 'opacity-50 cursor-not-allowed grayscale' : ''
                                     ]"
                                     :disabled="!store.atmAmount || parseInt(store.atmAmount.replace(/\D/g, '')) <= 0">
-                                {{ store.atmMode === 'deposit' ? 'Yatır' : 'Çek' }}
+                                <span>{{ store.atmMode === 'deposit' ? 'Para Yatır' : 'Para Çek' }}</span>
+                                <i class="fas" :class="store.atmMode === 'deposit' ? 'fa-arrow-down' : 'fa-arrow-up'"></i>
                             </button>
                         </div>
                     </div>
