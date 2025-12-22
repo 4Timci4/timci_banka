@@ -33,6 +33,10 @@ const app = createApp({
             return new Date().toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         });
 
+        const needsScroll = computed(() => {
+            return ['history', 'bills', 'transfer'].includes(store.currentView);
+        });
+
         // --- NUI Event Listeners ---
         onMounted(() => {
             // NUI Message Handler
@@ -153,6 +157,7 @@ const app = createApp({
             store,
             getPageTitle,
             currentDate,
+            needsScroll,
             menuItems,
             sendNuiCallback,
             closeUI

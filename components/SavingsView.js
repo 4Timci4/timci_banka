@@ -3,7 +3,7 @@ import { store } from '../store.js';
 
 export default {
     template: `
-        <div class="flex flex-col h-full p-2 animate-fade-in">
+        <div class="flex flex-col h-fit p-2 animate-fade-in">
             <!-- Header Section -->
             <div class="flex items-center justify-between mb-6 shrink-0">
                 <div>

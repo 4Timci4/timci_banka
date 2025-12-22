@@ -2,7 +2,7 @@ import { store } from '../store.js';
 
 export default {
     template: `
-        <div class="grid grid-cols-12 gap-8 h-full animate-fade-in pb-4">
+        <div class="grid grid-cols-12 gap-8 h-fit animate-fade-in pb-4">
             <!-- Left Column: Card & Actions -->
             <div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
                 <!-- Realistic Credit Card (Theme Compatible) -->

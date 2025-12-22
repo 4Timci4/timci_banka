@@ -1,83 +1,170 @@
-import { ref } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+import { ref, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 import { store } from '../store.js';
 
 export default {
     template: `
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in pb-10">
-            <!-- Send Money Form -->
-            <div class="bg-surface p-8 rounded-[2rem] shadow-lg border border-slate-700 relative overflow-hidden h-[600px] flex flex-col">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[4rem]"></div>
-                
-                <h3 class="text-xl font-bold text-white mb-8 flex items-center gap-2 relative z-10 shrink-0">
-                    <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    Para Transferi
-                </h3>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in pb-10 items-start">
+            <!-- Left Column: Transfer Form (7 cols) -->
+            <div class="lg:col-span-7 flex flex-col gap-6">
+                <!-- Main Card -->
+                <div class="bg-surface-dark/80 backdrop-blur-md p-8 rounded-[2rem] shadow-2xl border border-white/5 relative overflow-hidden flex flex-col h-fit">
+                    <!-- Decorative Background -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
 
-                <div class="space-y-6 relative z-10 flex-1 flex flex-col justify-center">
-                    <div class="group">
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Alıcı Telefon No</label>
-                        <div class="relative">
-                            <input type="text" v-model="transferForm.phone" placeholder="555-0100" maxlength="30" 
-                                   class="input-primary">
-                            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-8 relative z-10">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                                    <i class="fas fa-paper-plane text-sm"></i>
+                                </div>
+                                Para Transferi
+                            </h3>
+                            <p class="text-slate-400 text-sm mt-1 ml-13">Güvenli ve hızlı para gönderimi</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-slate-400 uppercase tracking-wider font-medium mb-1">Mevcut Bakiye</div>
+                            <div class="text-xl font-mono font-bold text-white drop-shadow-md">{{ store.formatMoney(store.user.balance) }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Form Content -->
+                    <div class="space-y-5 relative z-10 mt-2 max-w-xl mx-auto w-full">
+                        
+                        <!-- Input: Phone -->
+                        <div class="group relative">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1 group-focus-within:text-primary transition-colors">
+                                <i class="fas fa-hashtag mr-1"></i> Alıcı Hesap / Telefon
+                            </label>
+                            <div class="relative transition-all duration-300 transform group-focus-within:scale-[1.02]">
+                                <input type="text" v-model="transferForm.phone" placeholder="555-0100" maxlength="10" 
+                                       class="w-full pl-12 pr-4 py-4 rounded-xl bg-black/20 border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 font-mono text-lg shadow-inner">
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors">
+                                    <i class="fas fa-user"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="group">
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Gönderilecek Tutar</label>
-                        <div class="relative">
-                            <input type="text" v-model="transferForm.amount" placeholder="0"
-                                   @input="transferForm.amount = store.formatAmount(transferForm.amount)"
-                                   class="w-full pl-8 pr-16 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all text-white placeholder-slate-700">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-xl">$</span>
-                            <button class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-800 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-colors" @click="transferForm.amount = Math.floor(store.user.balance).toLocaleString('en-US')">TÜMÜ</button>
+                        
+                        <!-- Input: Amount -->
+                        <div class="group relative">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1 group-focus-within:text-accent transition-colors">
+                                <i class="fas fa-coins mr-1"></i> Gönderilecek Tutar
+                            </label>
+                            <div class="relative transition-all duration-300 transform group-focus-within:scale-[1.02]">
+                                <input type="text" v-model="transferForm.amount" placeholder="0"
+                                       @input="formatAmountInput"
+                                       class="w-full pl-12 pr-24 py-4 rounded-xl bg-black/20 border border-white/10 focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 font-mono text-xl font-bold shadow-inner tracking-wide">
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-accent transition-colors text-lg">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <button class="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/5 rounded-lg text-[10px] font-bold text-accent hover:text-white transition-all active:scale-95"
+                                        @click="setMaxAmount">
+                                    TÜMÜ
+                                </button>
+                            </div>
+                            
+                            <!-- Quick Amounts -->
+                            <div class="flex gap-2 mt-2 overflow-x-auto pb-1 scrollbar-hide">
+                                <button v-for="amount in quickAmounts" :key="amount"
+                                        @click="setAmount(amount)"
+                                        class="px-3 py-1 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 text-[10px] font-mono text-slate-300 transition-all active:scale-95 whitespace-nowrap">
+                                    \${{ amount.toLocaleString() }}
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="group">
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Açıklama (Opsiyonel)</label>
-                        <input type="text" v-model="transferForm.description" placeholder="Ödeme..." 
-                               class="input-primary">
-                    </div>
+                        <!-- Input: Description -->
+                        <div class="group relative">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1 group-focus-within:text-primary transition-colors">
+                                <i class="fas fa-align-left mr-1"></i> Açıklama (Opsiyonel)
+                            </label>
+                            <div class="relative transition-all duration-300 transform group-focus-within:scale-[1.02]">
+                                <input type="text" v-model="transferForm.description" placeholder="Ödeme notu..." 
+                                       class="w-full pl-12 pr-4 py-4 rounded-xl bg-black/20 border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-black/30 outline-none transition-all text-white placeholder-slate-600 shadow-inner">
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors">
+                                    <i class="fas fa-pen"></i>
+                                </div>
+                            </div>
+                        </div>
 
-                    <button class="btn-primary w-full mt-4" 
-                              @click="handleTransfer"
-                              :disabled="!transferForm.amount || !transferForm.phone || parseInt(transferForm.amount.replace(/\D/g, '')) <= 0"
-                              :class="!transferForm.amount || !transferForm.phone || parseInt(transferForm.amount.replace(/\D/g, '')) <= 0 ? 'opacity-50 cursor-not-allowed' : ''">
-                        Transferi Onayla
-                    </button>
+                        <!-- Action Button -->
+                        <button class="w-full py-4 rounded-xl font-bold text-base shadow-lg shadow-primary/20 transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden mt-2"
+                                @click="handleTransfer"
+                                :disabled="!isValidTransfer"
+                                :class="isValidTransfer ? 'bg-gradient-to-r from-primary to-primary-dark hover:shadow-primary/40 hover:-translate-y-1 text-white' : 'bg-slate-800 text-slate-500 cursor-not-allowed opacity-50'">
+                            
+                            <span class="relative z-10">Transferi Onayla</span>
+                            <i class="fas fa-arrow-right relative z-10 group-hover:translate-x-1 transition-transform"></i>
+                            
+                            <!-- Shine Effect -->
+                            <div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0" v-if="isValidTransfer"></div>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Contacts List -->
-            <div class="flex flex-col h-[600px] space-y-4">
-                <h3 class="text-lg font-bold text-slate-300 flex items-center gap-2 px-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    Yakındaki Kişiler
-                </h3>
-                <div class="bg-surface rounded-[2rem] shadow-lg border border-slate-700 flex-1 overflow-hidden flex flex-col">
-                    <div class="p-2 space-y-1 overflow-y-auto custom-scrollbar flex-1">
-                        <div v-for="player in store.nearbyPlayers" :key="player.id"
-                             @click="transferForm.phone = player.phone"
-                             class="flex items-center p-3 rounded-2xl border border-transparent hover:border-slate-600 hover:bg-white/5 cursor-pointer transition-all group">
+            <!-- Right Column: Nearby & Recent (5 cols) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                
+                <!-- Nearby Players -->
+                <div class="bg-surface-dark/80 backdrop-blur-md rounded-[2rem] shadow-xl border border-white/5 flex flex-col overflow-hidden relative h-fit">
+                    <div class="p-6 border-b border-white/5 bg-black/20">
+                        <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-accent"></i>
+                            Yakındaki Kişiler
+                        </h3>
+                    </div>
+                    
+                    <div class="overflow-y-auto custom-scrollbar p-4 space-y-2 max-h-[500px]">
+                        <div v-if="store.nearbyPlayers.length === 0" class="flex flex-col items-center justify-center py-10 text-slate-500 gap-2">
+                            <i class="fas fa-users-slash text-2xl opacity-50"></i>
+                            <span class="text-sm">Yakında kimse yok</span>
+                        </div>
+
+                        <div v-for="player in paginatedPlayers" :key="player.id"
+                             @click="selectContact(player)"
+                             class="flex items-center p-3 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.08] hover:border-white/10 cursor-pointer transition-all group active:scale-[0.98]">
+                            
+                            <!-- Avatar -->
                             <div class="relative">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center font-bold text-lg text-slate-300 shadow-inner group-hover:text-white transition-colors border border-white/5">
-                                    {{ player.name.charAt(0) }}
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center font-bold text-lg text-slate-300 shadow-inner group-hover:text-white transition-colors border border-white/5">
+                                    {{ player.name.charAt(0).toUpperCase() }}
                                 </div>
-                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-success border-4 border-surface rounded-full"></div>
+                                <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-success border-2 border-surface-dark rounded-full shadow-sm"></div>
                             </div>
-                            <div class="flex-1 ml-4">
-                                <div class="font-bold text-slate-200 group-hover:text-primary-light transition-colors">{{ player.name }}</div>
-                                <div class="text-xs text-slate-500 font-mono bg-black/20 inline-block px-1.5 py-0.5 rounded mt-1">{{ player.phone }}</div>
+                            
+                            <!-- Info -->
+                            <div class="flex-1 ml-4 overflow-hidden">
+                                <div class="font-bold text-slate-200 group-hover:text-primary-light transition-colors truncate">{{ player.name }}</div>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="text-[10px] text-slate-400 font-mono bg-black/30 px-1.5 py-0.5 rounded border border-white/5">
+                                        {{ player.phone }}
+                                    </span>
+                                    <span class="text-[10px] text-slate-500">Mesafe: Yakın</span>
+                                </div>
                             </div>
-                            <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform scale-50 group-hover:scale-100">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            
+                            <!-- Action Icon -->
+                            <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                                <i class="fas fa-chevron-right text-xs"></i>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div v-if="totalPages > 1" class="p-4 border-t border-white/5 bg-black/20 flex items-center justify-between">
+                        <button @click="prevPage" :disabled="currentPage === 1"
+                                class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                            <i class="fas fa-chevron-left text-xs"></i>
+                        </button>
+                        <span class="text-xs font-mono text-slate-500">
+                            {{ currentPage }} / {{ totalPages }}
+                        </span>
+                        <button @click="nextPage" :disabled="currentPage === totalPages"
+                                class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -90,21 +177,61 @@ export default {
             description: ''
         });
 
+        // Pagination State
+        const currentPage = ref(1);
+        const itemsPerPage = 5;
+
+        const totalPages = computed(() => Math.ceil(store.nearbyPlayers.length / itemsPerPage));
+
+        const paginatedPlayers = computed(() => {
+            const start = (currentPage.value - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            return store.nearbyPlayers.slice(start, end);
+        });
+
+        const nextPage = () => {
+            if (currentPage.value < totalPages.value) currentPage.value++;
+        };
+
+        const prevPage = () => {
+            if (currentPage.value > 1) currentPage.value--;
+        };
+
+        const quickAmounts = [100, 500, 1000, 5000, 10000];
+
+        const isValidTransfer = computed(() => {
+            const rawAmount = parseInt(transferForm.value.amount.replace(/\D/g, '')) || 0;
+            return transferForm.value.phone.length > 0 && 
+                   rawAmount > 0 && 
+                   rawAmount <= store.user.balance;
+        });
+
+        const formatAmountInput = (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value) {
+                transferForm.value.amount = parseInt(value).toLocaleString('en-US');
+            } else {
+                transferForm.value.amount = '';
+            }
+        };
+
+        const setAmount = (val) => {
+            transferForm.value.amount = val.toLocaleString('en-US');
+        };
+
+        const setMaxAmount = () => {
+            transferForm.value.amount = Math.floor(store.user.balance).toLocaleString('en-US');
+        };
+
+        const selectContact = (player) => {
+            transferForm.value.phone = player.phone;
+        };
+
         const handleTransfer = async () => {
-            if (!transferForm.value.phone || !transferForm.value.amount) return;
+            if (!isValidTransfer.value) return;
             
             const amount = parseInt(transferForm.value.amount.replace(/\D/g, ''));
             
-            if (amount <= 0) {
-                store.showError('Hata', 'Geçersiz tutar');
-                return;
-            }
-            
-            if (amount > store.user.balance) {
-                store.showError('Yetersiz Bakiye', `Hesabınızda yeterli bakiye bulunmuyor. Mevcut bakiyeniz: ${store.formatMoney(store.user.balance)}`);
-                return;
-            }
-
             // FiveM Server Communication
             try {
                 if (typeof GetParentResourceName !== 'undefined') {
@@ -121,14 +248,13 @@ export default {
                     const result = await response.json();
                     
                     if (result.success) {
-                        // Reset form on success
                         transferForm.value = { phone: '', amount: '', description: '' };
                         store.currentView = 'dashboard';
                     } else {
                         store.showError('Transfer Hatası', result.message || 'Transfer işlemi başarısız');
                     }
                 } else {
-                    // Development/Test mode - Local simulation
+                    // Development/Test mode
                     store.user.balance -= amount;
                     store.addTransaction({
                         id: Date.now(),
@@ -150,7 +276,18 @@ export default {
         return {
             store,
             transferForm,
-            handleTransfer
+            quickAmounts,
+            isValidTransfer,
+            formatAmountInput,
+            setAmount,
+            setMaxAmount,
+            selectContact,
+            handleTransfer,
+            currentPage,
+            totalPages,
+            paginatedPlayers,
+            nextPage,
+            prevPage
         };
     }
 };

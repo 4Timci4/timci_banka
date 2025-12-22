@@ -3,7 +3,7 @@ import { store } from '../store.js';
 
 export default {
     template: `
-        <section class="w-full h-full flex flex-col justify-center items-center text-white relative overflow-hidden">
+        <section class="w-full h-fit flex flex-col justify-center items-center text-white relative overflow-hidden">
             <!-- Decorational Background Elements -->
             <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px]"></div>
             <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px]"></div>

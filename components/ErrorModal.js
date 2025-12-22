@@ -3,29 +3,31 @@ import { store } from '../store.js';
 export default {
     template: `
         <transition name="modal">
-            <div v-if="store.errorModal.show" class="fixed inset-0 flex items-center justify-center z-50 bg-black/80 backdrop-blur-sm" @click="store.closeErrorModal">
-                <div @click.stop class="bg-surface border border-danger/30 rounded-3xl shadow-2xl w-[450px] overflow-hidden animate-fade-in">
-                    <!-- Modal Header -->
-                    <div class="p-6 border-b border-danger/20 bg-danger/10">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-xl bg-danger/20 text-danger flex items-center justify-center border border-danger/30">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white">{{ store.errorModal.title }}</h3>
-                            </div>
+            <div v-if="store.errorModal.show" class="fixed inset-0 flex items-center justify-center z-[60] bg-black/90 backdrop-blur-md" @click="store.closeErrorModal">
+                <div @click.stop class="bg-surface-dark border border-red-500/20 rounded-[2rem] shadow-2xl shadow-red-900/20 w-[400px] overflow-hidden animate-bounce-in relative">
+                    
+                    <!-- Background Glow -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-red-500/20 rounded-full blur-[60px] pointer-events-none"></div>
+
+                    <!-- Icon -->
+                    <div class="pt-8 flex justify-center relative z-10">
+                        <div class="w-20 h-20 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.2)]">
+                            <i class="fas fa-exclamation-triangle text-4xl text-red-500 drop-shadow-md"></i>
                         </div>
                     </div>
 
-                    <!-- Modal Body -->
-                    <div class="p-8">
-                        <p class="text-slate-300 text-center leading-relaxed">{{ store.errorModal.message }}</p>
+                    <!-- Content -->
+                    <div class="p-8 text-center relative z-10">
+                        <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">{{ store.errorModal.title }}</h3>
+                        <p class="text-slate-400 leading-relaxed text-sm">{{ store.errorModal.message }}</p>
                     </div>
 
-                    <!-- Modal Footer -->
-                    <div class="p-6 border-t border-slate-700">
-                        <button @click="store.closeErrorModal" class="w-full bg-danger hover:bg-red-600 text-white font-bold py-3 rounded-xl transition-all">
-                            Tamam
+                    <!-- Footer -->
+                    <div class="p-6 pt-0 relative z-10">
+                        <button @click="store.closeErrorModal" 
+                                class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-red-500/20 transition-all hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 group">
+                            <span>Tamam</span>
+                            <i class="fas fa-check group-hover:scale-110 transition-transform"></i>
                         </button>
                     </div>
                 </div>
