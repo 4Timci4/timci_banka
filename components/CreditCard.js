@@ -46,7 +46,7 @@ export default {
                 <!-- Middle Row: Balance -->
                 <div class="mt-2 pl-1">
                     <div class="text-[10px] text-slate-400 uppercase tracking-widest font-medium mb-1">Toplam Bakiye</div>
-                    <div class="text-3xl font-mono font-bold tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    <div class="text-1xl font-mono font-bold tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                         {{ store.formatMoney(store.user.balance) }}
                     </div>
                 </div>
@@ -61,8 +61,8 @@ export default {
                         
                         <div class="flex items-center gap-8">
                             <div>
-                                <div class="text-[7px] uppercase text-slate-500 tracking-wider mb-0.5">Sahibi</div>
-                                <div class="text-xs uppercase text-slate-200 tracking-widest font-bold drop-shadow-md">{{ store.user.name }}</div>
+                                <div class="text-[7px] uppercase text-slate-500 tracking-wider mb-0.5">Kart Sahibi</div>
+                                <div class="text-xs uppercase text-slate-200 tracking-widest font-bold drop-shadow-md">{{ formatName(store.user.name) }}</div>
                             </div>
                             <div>
                                 <div class="text-[7px] uppercase text-slate-500 tracking-wider mb-0.5">SKT</div>
@@ -84,8 +84,14 @@ export default {
         </div>
     `,
     setup() {
+        const formatName = (name) => {
+            if (!name) return '';
+            return name.replace(/i/g, 'I').toUpperCase();
+        };
+
         return {
-            store
+            store,
+            formatName
         };
     }
 };

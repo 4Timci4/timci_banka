@@ -152,7 +152,7 @@
                     <sidebar></sidebar>
 
                     <!-- Content Area -->
-                    <main class="flex-1 p-10 overflow-y-auto bg-surface-dark relative">
+                    <main class="flex-1 p-10 bg-surface-dark relative" :class="{ 'overflow-y-auto': needsScroll }">
                         <!-- Top Bar -->
                         <header class="flex justify-between items-center mb-10 sticky top-0 z-10 py-4 bg-surface-dark/95 backdrop-blur-sm">
                             <div>
