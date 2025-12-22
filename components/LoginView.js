@@ -1,4 +1,4 @@
-import { computed, ref } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+import { computed, ref, onMounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 import { store } from '../store.js';
 
 export default {
@@ -87,6 +87,12 @@ export default {
         </section>
     `,
     setup() {
+        onMounted(() => {
+            if (!store.user.hasPin) {
+                store.currentView = 'setup-pin';
+            }
+        });
+
         const enterPin = (num) => {
             if (store.pinInput.length < 4) {
                 store.pinInput += num;
@@ -100,6 +106,13 @@ export default {
         };
 
         const submitLogin = () => {
+            // Check if user needs to setup PIN first
+            if (!store.user.hasPin) {
+                store.currentView = 'setup-pin';
+                store.pinInput = '';
+                return;
+            }
+
             if (!store.pinRequired || store.pinInput === store.user.pin) {
                 store.currentView = 'dashboard';
                 store.pinInput = '';

@@ -17,7 +17,8 @@ const createInitialState = () => ({
     // User State
     user: {
         ...mockUser,
-        cardNumberLast4: Math.floor(1000 + Math.random() * 9000)
+        cardNumberLast4: Math.floor(1000 + Math.random() * 9000),
+        hasPin: !!mockUser.pin // Check if user has a PIN initially
     },
     
     // Financial State
@@ -64,6 +65,8 @@ export const useStore = () => {
         updateBalance: (amount) => storeActions.updateBalance(store, amount),
         hasSufficientBalance: (amount) => storeActions.hasSufficientBalance(store, amount),
         createTransaction: storeActions.createTransaction,
+        setPin: (pin) => storeActions.setPin(store, pin),
+        changePin: (oldPin, newPin) => storeActions.changePin(store, oldPin, newPin),
         
         // Formatters
         formatMoney,
@@ -106,3 +109,5 @@ store.showError = (title, message) => storeActions.showError(store, title, messa
 store.closeErrorModal = () => storeActions.closeErrorModal(store);
 store.updateUser = (userData) => storeActions.updateUser(store, userData);
 store.addTransaction = (transaction) => storeActions.addTransaction(store, transaction);
+store.setPin = (pin) => storeActions.setPin(store, pin);
+store.changePin = (oldPin, newPin) => storeActions.changePin(store, oldPin, newPin);

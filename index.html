@@ -146,6 +146,7 @@
             <!-- VIEW: LOGIN -->
             <transition name="fade" mode="out-in">
                 <login-view v-if="store.currentView === 'login'" key="login"></login-view>
+                <setup-pin-view v-else-if="store.currentView === 'setup-pin'" key="setup-pin"></setup-pin-view>
 
                 <!-- VIEW: DASHBOARD & OTHERS -->
                 <section v-else class="flex w-full h-full bg-surface-dark" key="app">
@@ -176,6 +177,7 @@
                         <bills-view v-if="store.currentView === 'bills'"></bills-view>
                         <savings-view v-if="store.currentView === 'savings'"></savings-view>
                         <loans-view v-if="store.currentView === 'loans'"></loans-view>
+                        <settings-view v-if="store.currentView === 'settings'"></settings-view>
 
                     </main>
                 </section>

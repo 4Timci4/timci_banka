@@ -12,6 +12,7 @@ try {
 
 // Components
 import LoginView from './components/LoginView.js';
+import SetupPinView from './components/SetupPinView.js';
 import Sidebar from './components/Sidebar.js';
 import DashboardView from './components/DashboardView.js';
 import TransferView from './components/TransferView.js';
@@ -19,6 +20,7 @@ import HistoryView from './components/HistoryView.js';
 import BillsView from './components/BillsView.js';
 import SavingsView from './components/SavingsView.js';
 import LoansView from './components/LoansView.js';
+import SettingsView from './components/SettingsView.js';
 import AtmModal from './components/AtmModal.js';
 import ErrorModal from './components/ErrorModal.js';
 import CreditCard from './components/CreditCard.js';
@@ -167,6 +169,7 @@ const app = createApp({
 
 // Register Components
 app.component('login-view', LoginView);
+app.component('setup-pin-view', SetupPinView);
 app.component('sidebar', Sidebar);
 app.component('dashboard-view', DashboardView);
 app.component('transfer-view', TransferView);
@@ -174,6 +177,7 @@ app.component('history-view', HistoryView);
 app.component('bills-view', BillsView);
 app.component('savings-view', SavingsView);
 app.component('loans-view', LoansView);
+app.component('settings-view', SettingsView);
 app.component('atm-modal', AtmModal);
 app.component('error-modal', ErrorModal);
 app.component('credit-card', CreditCard);

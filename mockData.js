@@ -2,7 +2,7 @@ export const mockUser = {
     name: 'Michael De Santa',
     phone: '555-0184',
     balance: 1450250,
-    pin: '1234'
+    pin: 1234 // Set to null or empty string to test initial setup
 };
 
 export const mockTransactions = [

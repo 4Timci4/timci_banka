@@ -179,3 +179,64 @@ export const handleAtmOperation = async (store, operation, amount) => {
         throw error;
     }
 };
+
+/**
+ * Sets a new PIN for the user
+ * @param {Object} store - The reactive store object
+ * @param {string} pin - The new PIN
+ * @returns {Promise} Operation result
+ */
+export const setPin = async (store, pin) => {
+    try {
+        if (!/^\d{4}$/.test(pin)) {
+            throw new Error('PIN 4 haneli bir sayı olmalıdır');
+        }
+
+        const result = await sendNuiCallback('setPin', { pin });
+        
+        if (result.success) {
+            store.user.pin = pin;
+            store.user.hasPin = true;
+            store.pinRequired = true;
+        }
+        
+        return result;
+    } catch (error) {
+        showError(store, 'PIN Hatası', error.message);
+        throw error;
+    }
+};
+
+/**
+ * Changes the user's PIN
+ * @param {Object} store - The reactive store object
+ * @param {string} oldPin - The current PIN
+ * @param {string} newPin - The new PIN
+ * @returns {Promise} Operation result
+ */
+export const changePin = async (store, oldPin, newPin) => {
+    try {
+        if (oldPin !== store.user.pin) {
+            throw new Error('Mevcut PIN hatalı');
+        }
+        
+        if (!/^\d{4}$/.test(newPin)) {
+            throw new Error('Yeni PIN 4 haneli bir sayı olmalıdır');
+        }
+        
+        if (oldPin === newPin) {
+            throw new Error('Yeni PIN eskisiyle aynı olamaz');
+        }
+
+        const result = await sendNuiCallback('changePin', { oldPin, newPin });
+        
+        if (result.success) {
+            store.user.pin = newPin;
+        }
+        
+        return result;
+    } catch (error) {
+        showError(store, 'PIN Değiştirme Hatası', error.message);
+        throw error;
+    }
+};
