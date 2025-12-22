@@ -1,17 +1,13 @@
 import { createApp, computed, onMounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
-import { store, menuItems } from './store.js';
+import { store } from './store.js';
+import { menuItems } from './constants/menuItems.js';
+import { validateStore, getPageTitle as getPageTitleUtil } from './utils/validation.js';
 
-// Debug check
-console.log('Script.js: Importing store...', store);
-
-if (!store) {
-    console.error('CRITICAL ERROR: Store is undefined in script.js import!');
-} else {
-    console.log('Store imported successfully:', store);
-    if (!store.currentView) {
-        console.warn('WARNING: store.currentView is undefined! Resetting to "login".');
-        store.currentView = 'dashboard';
-    }
+// Initialize and validate store
+try {
+    validateStore(store);
+} catch (error) {
+    throw new Error(`Store initialization failed: ${error.message}`);
 }
 
 // Components
@@ -25,22 +21,12 @@ import SavingsView from './components/SavingsView.js';
 import LoansView from './components/LoansView.js';
 import AtmModal from './components/AtmModal.js';
 import ErrorModal from './components/ErrorModal.js';
+import CreditCard from './components/CreditCard.js';
 
 const app = createApp({
     setup() {
-        console.log('App Setup running. Store in setup:', store);
-        
         const getPageTitle = computed(() => {
-            if (!store) {
-                 console.error('Store is undefined in getPageTitle computed property');
-                 return 'Bankacılık';
-            }
-            if (!store.currentView) {
-                 store.currentView = 'dashboard';
-                 return 'Bankacılık';
-            }
-            const item = menuItems.find(i => i.id === store.currentView);
-            return item ? item.label : 'Bankacılık';
+            return getPageTitleUtil(store, menuItems);
         });
 
         const currentDate = computed(() => {
@@ -65,9 +51,14 @@ const app = createApp({
 
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    // Fetch to close UI in FiveM
-                    // fetch(`https://${GetParentResourceName()}/close`, { method: 'POST' });
-                    console.log('ESC Pressed');
+                    // Close UI in FiveM environment
+                    try {
+                        if (typeof GetParentResourceName !== 'undefined') {
+                            fetch(`https://${GetParentResourceName()}/close`, { method: 'POST' });
+                        }
+                    } catch (error) {
+                        console.warn('Failed to close FiveM UI:', error.message);
+                    }
                 }
             });
         });
@@ -79,11 +70,6 @@ const app = createApp({
             currentDate,
             menuItems
         };
-    },
-    // Adding global properties for safer access (backup)
-    created() {
-        console.log('App Created');
-        this.store = store;
     }
 });
 
@@ -98,8 +84,9 @@ app.component('savings-view', SavingsView);
 app.component('loans-view', LoansView);
 app.component('atm-modal', AtmModal);
 app.component('error-modal', ErrorModal);
+app.component('credit-card', CreditCard);
 
-// Also provide globally
+// Provide store globally for template access
 app.config.globalProperties.store = store;
 
 app.mount('#app');

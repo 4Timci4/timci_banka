@@ -43,6 +43,75 @@
             }
         }
     </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                background-image: linear-gradient(to right, var(--tw-gradient-stops));
+                --tw-gradient-from: #2563eb;
+                --tw-gradient-to: #60a5fa;
+                --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+                color: #ffffff;
+                font-weight: 700;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                border-radius: 0.75rem;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                --tw-shadow: 0 0 20px -5px rgba(37, 99, 235, 0.5);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+                transition-property: all;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                transition-duration: 150ms;
+                border-width: 1px;
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+            .btn-primary:hover {
+                --tw-gradient-to: #ffffff;
+                transform: scale(1.02);
+            }
+            .btn-primary:active {
+                transform: scale(0.95);
+            }
+            
+            .input-primary {
+                width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                border-radius: 0.75rem;
+                background-color: #020617;
+                border-width: 1px;
+                border-color: #334155;
+                outline: 2px solid transparent;
+                outline-offset: 2px;
+                transition-property: all;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                transition-duration: 150ms;
+                color: #ffffff;
+                font-family: 'JetBrains Mono', monospace;
+            }
+            .input-primary::placeholder {
+                color: #334155;
+            }
+            .input-primary:focus {
+                border-color: #2563eb;
+                --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+                --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+                box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+                --tw-ring-color: #2563eb;
+                --tw-shadow: 0 0 20px -5px rgba(37, 99, 235, 0.5);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+            }
+
+            .card-surface {
+                background-color: #0f172a;
+                border-radius: 2rem;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                border-width: 1px;
+                border-color: #334155;
+            }
+        }
+    </style>
     <link rel="stylesheet" href="style.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">

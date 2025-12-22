@@ -55,7 +55,7 @@ export default {
                             v-model="savingsForm.amount"
                             @input="formatInput"
                             placeholder="Tutar giriniz..."
-                            class="w-full bg-slate-900/50 border border-slate-700 rounded-lg py-3.5 pl-4 pr-20 text-white font-mono font-bold focus:border-accent focus:ring-1 focus:ring-accent/50 transition-all outline-none placeholder:text-slate-600"
+                            class="input-primary pr-20"
                         >
                         <button 
                             @click="setMaxAmount"

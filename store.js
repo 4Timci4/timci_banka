@@ -1,107 +1,108 @@
-import { reactive, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+import { reactive } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 import { mockUser, mockTransactions, mockNearbyPlayers, mockLoans, mockBills } from './mockData.js';
+import { formatMoney, formatAmount } from './services/formatters.js';
+import * as storeActions from './services/storeActions.js';
 
-console.log('Store.js: Initializing...');
-
-const defaultState = {
-    // State
-    isVisible: true,
-    currentView: 'dashboard', // Default to dashboard to bypass login
-    user: {
-        ...mockUser,
-        cardNumberLast4: Math.floor(1000 + Math.random() * 9000)
-    },
-    transactions: [...mockTransactions],
-    nearbyPlayers: [...mockNearbyPlayers],
-    loans: [...mockLoans],
-    bills: [...mockBills],
-    
-    // Savings State
-    savingsBalance: 50000,
-    savingsInterestRate: 4.5,
-    
+/**
+ * Initial state configuration
+ */
+const createInitialState = () => ({
     // UI State
+    isVisible: true,
+    currentView: 'dashboard',
     loginError: false,
     pinInput: '',
     pinRequired: true,
     
-    // Error Modal
+    // User State
+    user: {
+        ...mockUser,
+        cardNumberLast4: Math.floor(1000 + Math.random() * 9000)
+    },
+    
+    // Financial State
+    transactions: [...mockTransactions],
+    loans: [...mockLoans],
+    bills: [...mockBills],
+    savingsBalance: 50000,
+    savingsInterestRate: 4.5,
+    
+    // Players State
+    nearbyPlayers: [...mockNearbyPlayers],
+    
+    // Modal State
     errorModal: {
         show: false,
         title: '',
         message: ''
     },
-
+    
     // ATM State
     showAtmModal: false,
     atmMode: 'deposit',
-    atmAmount: '',
+    atmAmount: ''
+});
 
-    // Helper Methods
-    formatMoney(value) {
-        const numValue = parseInt(value) || 0;
-        return '$' + numValue.toLocaleString('en-US');
-    },
+/**
+ * Reactive store instance
+ */
+export const store = reactive(createInitialState());
 
-    formatAmount(value) {
-        const cleanValue = value.replace(/\D/g, '');
-        if (cleanValue === '') return '';
-        return parseInt(cleanValue).toLocaleString('en-US');
-    },
-
-    showError(title, message) {
-        this.errorModal.show = true;
-        this.errorModal.title = title;
-        this.errorModal.message = message;
-    },
-
-    closeErrorModal() {
-        this.errorModal.show = false;
-    },
-    
-    // Actions
-    updateUser(userData) {
-        this.user = { ...this.user, ...userData };
-    },
-    
-    addTransaction(transaction) {
-        this.transactions.unshift(transaction);
-    }
+/**
+ * Store API - Actions and utilities
+ */
+export const useStore = () => {
+    return {
+        // State
+        state: store,
+        
+        // Actions
+        showError: (title, message) => storeActions.showError(store, title, message),
+        closeErrorModal: () => storeActions.closeErrorModal(store),
+        updateUser: (userData) => storeActions.updateUser(store, userData),
+        addTransaction: (transaction) => storeActions.addTransaction(store, transaction),
+        updateBalance: (amount) => storeActions.updateBalance(store, amount),
+        hasSufficientBalance: (amount) => storeActions.hasSufficientBalance(store, amount),
+        createTransaction: storeActions.createTransaction,
+        
+        // Formatters
+        formatMoney,
+        formatAmount,
+        
+        // Getters
+        get currentUser() {
+            return store.user;
+        },
+        
+        get recentTransactions() {
+            return store.transactions.slice(0, 5);
+        },
+        
+        get totalBalance() {
+            return store.user.balance + store.savingsBalance;
+        },
+        
+        get monthlyInterest() {
+            return Math.round(store.savingsBalance * (store.savingsInterestRate / 100) / 12);
+        },
+        
+        get pendingBills() {
+            return store.bills.filter(bill => bill.status === 'pending');
+        },
+        
+        get activeLoanCount() {
+            return store.loans.length;
+        }
+    };
 };
 
-export const store = reactive(defaultState);
-
-console.log('Store.js: Store exported', store);
-
-export const menuItems = [
-    { 
-        id: 'dashboard', 
-        label: 'Hesap Özeti', 
-        icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>'
-    },
-    { 
-        id: 'transfer', 
-        label: 'Para Transferi', 
-        icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>' 
-    },
-    { 
-        id: 'history', 
-        label: 'İşlem Geçmişi', 
-        icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
-    },
-    {
-        id: 'loans',
-        label: 'Krediler',
-        icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
-    },
-    {
-        id: 'bills',
-        label: 'Faturalar',
-        icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>'
-    },
-    {
-        id: 'savings',
-        label: 'Vadeli Hesap',
-        icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
-    }
-];
+/**
+ * Legacy compatibility - Direct store access with methods
+ * @deprecated Use useStore() hook instead
+ */
+store.formatMoney = formatMoney;
+store.formatAmount = formatAmount;
+store.showError = (title, message) => storeActions.showError(store, title, message);
+store.closeErrorModal = () => storeActions.closeErrorModal(store);
+store.updateUser = (userData) => storeActions.updateUser(store, userData);
+store.addTransaction = (transaction) => storeActions.addTransaction(store, transaction);

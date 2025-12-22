@@ -75,7 +75,7 @@ export default {
                             </div>
 
                             <button v-if="bill.status === 'pending'" @click="payBill(bill)"
-                                    class="h-12 px-6 rounded-xl bg-gradient-to-r from-primary to-primary-light text-white font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 border border-white/10 group/btn">
+                                    class="btn-primary h-12 px-6 flex items-center gap-2 group/btn">
                                 <span>Öde</span>
                                 <svg class="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                             </button>

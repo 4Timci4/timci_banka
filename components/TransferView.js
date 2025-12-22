@@ -20,7 +20,7 @@ export default {
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Alıcı Telefon No</label>
                         <div class="relative">
                             <input type="text" v-model="transferForm.phone" placeholder="555-0100" maxlength="30" 
-                                   class="w-full px-4 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all text-white placeholder-slate-700 font-mono">
+                                   class="input-primary">
                             <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                             </div>
@@ -41,10 +41,10 @@ export default {
                     <div class="group">
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 group-focus-within:text-primary transition-colors">Açıklama (Opsiyonel)</label>
                         <input type="text" v-model="transferForm.description" placeholder="Ödeme..." 
-                               class="w-full px-4 py-4 rounded-xl bg-surface-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-glow-primary outline-none transition-all text-white placeholder-slate-700">
+                               class="input-primary">
                     </div>
 
-                    <button class="w-full bg-gradient-to-r from-primary to-primary-light hover:to-white text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 border border-white/10 mt-4" 
+                    <button class="btn-primary w-full mt-4" 
                               @click="handleTransfer"
                               :disabled="!transferForm.amount || !transferForm.phone || parseInt(transferForm.amount.replace(/\D/g, '')) <= 0"
                               :class="!transferForm.amount || !transferForm.phone || parseInt(transferForm.amount.replace(/\D/g, '')) <= 0 ? 'opacity-50 cursor-not-allowed' : ''">

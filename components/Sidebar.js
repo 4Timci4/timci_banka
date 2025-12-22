@@ -1,4 +1,5 @@
-import { store, menuItems } from '../store.js';
+import { store } from '../store.js';
+import { menuItems } from '../constants/menuItems.js';
 
 export default {
     template: `

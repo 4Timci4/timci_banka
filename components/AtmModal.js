@@ -38,7 +38,7 @@ export default {
                             <div class="relative">
                                 <input type="text" v-model="store.atmAmount" placeholder="0"
                                        @input="store.atmAmount = store.formatAmount(store.atmAmount)"
-                                       class="w-full pl-12 pr-4 py-6 rounded-2xl bg-surface-dark border-2 border-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-white placeholder-slate-700 text-3xl font-bold font-mono text-center">
+                                       class="input-primary pl-12 text-3xl font-bold text-center py-6">
                                 <span class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-2xl">$</span>
                             </div>
                         </div>
@@ -60,9 +60,11 @@ export default {
                             </button>
                             <button @click="handleAtmTransaction"
                                     class="flex-1 py-4 rounded-xl font-bold transition-all hover:-translate-y-1 active:scale-95 shadow-lg"
-                                    :class="store.atmMode === 'deposit' ? 'bg-success hover:bg-emerald-400 text-white shadow-success/30' : 'bg-red-500 hover:bg-red-400 text-white shadow-red-500/30'"
-                                    :disabled="!store.atmAmount || parseInt(store.atmAmount.replace(/\D/g, '')) <= 0"
-                                    :class="!store.atmAmount || parseInt(store.atmAmount.replace(/\D/g, '')) <= 0 ? 'opacity-50 cursor-not-allowed' : ''">
+                                    :class="[
+                                        store.atmMode === 'deposit' ? 'bg-success hover:bg-emerald-400 text-white shadow-success/30' : 'bg-red-500 hover:bg-red-400 text-white shadow-red-500/30',
+                                        (!store.atmAmount || parseInt(store.atmAmount.replace(/\D/g, '')) <= 0) ? 'opacity-50 cursor-not-allowed' : ''
+                                    ]"
+                                    :disabled="!store.atmAmount || parseInt(store.atmAmount.replace(/\D/g, '')) <= 0">
                                 {{ store.atmMode === 'deposit' ? 'Yatır' : 'Çek' }}
                             </button>
                         </div>
