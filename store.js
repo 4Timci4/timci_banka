@@ -37,6 +37,11 @@ const createInitialState = () => ({
         title: '',
         message: ''
     },
+    successModal: {
+        show: false,
+        title: '',
+        message: ''
+    },
     
     // ATM State
     showAtmModal: false,
@@ -59,7 +64,9 @@ export const useStore = () => {
         
         // Actions
         showError: (title, message) => storeActions.showError(store, title, message),
+        showSuccess: (title, message) => storeActions.showSuccess(store, title, message),
         closeErrorModal: () => storeActions.closeErrorModal(store),
+        closeSuccessModal: () => storeActions.closeSuccessModal(store),
         updateUser: (userData) => storeActions.updateUser(store, userData),
         addTransaction: (transaction) => storeActions.addTransaction(store, transaction),
         updateBalance: (amount) => storeActions.updateBalance(store, amount),
@@ -106,7 +113,9 @@ export const useStore = () => {
 store.formatMoney = formatMoney;
 store.formatAmount = formatAmount;
 store.showError = (title, message) => storeActions.showError(store, title, message);
+store.showSuccess = (title, message) => storeActions.showSuccess(store, title, message);
 store.closeErrorModal = () => storeActions.closeErrorModal(store);
+store.closeSuccessModal = () => storeActions.closeSuccessModal(store);
 store.updateUser = (userData) => storeActions.updateUser(store, userData);
 store.addTransaction = (transaction) => storeActions.addTransaction(store, transaction);
 store.setPin = (pin) => storeActions.setPin(store, pin);

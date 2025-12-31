@@ -95,7 +95,37 @@ export default {
             if (!store.user.hasPin) {
                 store.currentView = 'setup-pin';
             }
+            
+            // Add global keydown listener for this view
+            window.addEventListener('keydown', handleKeydown);
         });
+
+        // Cleanup listener when component is unmounted (although in this architecture components might not unmount traditionally,
+        // but since we are using v-if in index.html, it's safer to handle if possible, or just be mindful)
+        // Since we don't have onUnmounted here easily available without import, we'll keep it simple.
+        // However, we should be careful not to duplicate listeners if view switches back and forth.
+        // A better approach in this setup is to check if current view is login.
+
+        const handleKeydown = (e) => {
+            if (store.currentView !== 'login') return;
+
+            // Numbers (Main keyboard and Numpad)
+            if (/^\d$/.test(e.key)) {
+                enterPin(e.key);
+            }
+            // Backspace
+            else if (e.key === 'Backspace') {
+                // Remove last digit
+                if (store.pinInput.length > 0) {
+                    store.pinInput = store.pinInput.slice(0, -1);
+                    store.loginError = false;
+                }
+            }
+            // Enter
+            else if (e.key === 'Enter') {
+                submitLogin();
+            }
+        };
 
         const enterPin = (num) => {
             if (store.pinInput.length < 4) {

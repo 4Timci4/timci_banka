@@ -21,7 +21,7 @@
 }
 
 .settings-subtitle {
-    color: #94a3b8;
+    color: #cbd5e1;
     font-size: 0.875rem;
     margin-top: 0.25rem;
 }
@@ -82,7 +82,7 @@
 
 .settings-card-subtitle {
     font-size: 0.75rem;
-    color: #94a3b8;
+    color: #cbd5e1;
 }
 
 .settings-form {
@@ -100,7 +100,7 @@
 .settings-label {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #64748b;
+    color: #cbd5e1;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -119,7 +119,7 @@
 }
 
 .settings-input::placeholder {
-    color: #475569;
+    color: #94a3b8;
 }
 
 .settings-input:focus {
@@ -176,7 +176,7 @@
 
 .settings-info-label {
     font-size: 0.625rem;
-    color: #64748b;
+    color: #cbd5e1;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 0.05em;

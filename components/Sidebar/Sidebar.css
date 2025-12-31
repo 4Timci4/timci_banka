@@ -101,7 +101,7 @@
     transition: all 300ms;
     position: relative;
     overflow: hidden;
-    color: #94a3b8;
+    color: #cbd5e1;
 }
 
 .sidebar-nav-btn:hover {
@@ -278,7 +278,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
+    color: #cbd5e1;
     transition: all 300ms;
 }
 

@@ -70,6 +70,14 @@ export default {
                             <i class="fas fa-history"></i>
                             Son İşlemler
                         </h3>
+                        
+                        <!-- Quick Filters -->
+                        <div class="dashboard-filters">
+                            <button @click="setFilter('all')" class="dashboard-filter-btn" :class="{ 'active': filter === 'all' }">Tümü</button>
+                            <button @click="setFilter('in')" class="dashboard-filter-btn in" :class="{ 'active': filter === 'in' }">Gelen</button>
+                            <button @click="setFilter('out')" class="dashboard-filter-btn out" :class="{ 'active': filter === 'out' }">Giden</button>
+                        </div>
+
                         <div class="recent-pagination" v-if="totalPages > 1">
                             <button class="recent-page-btn" @click="prevPage" :disabled="currentPage === 1">
                                 <i class="fas fa-chevron-left"></i>
@@ -83,7 +91,7 @@ export default {
 
                     <!-- List -->
                     <div class="recent-list custom-scrollbar">
-                        <div v-if="store.transactions.length === 0" class="recent-empty">
+                        <div v-if="filteredTransactions.length === 0" class="recent-empty">
                             <i class="fas fa-exchange-alt"></i>
                             <span>Henüz işlem yok</span>
                         </div>
@@ -122,16 +130,27 @@ export default {
             store.atmAmount = '';
         };
 
+        const filter = ref('all');
         const currentPage = ref(1);
         const itemsPerPage = 5;
 
-        const totalPages = computed(() => Math.ceil(store.transactions.length / itemsPerPage));
+        const filteredTransactions = computed(() => {
+            if (filter.value === 'all') return store.transactions;
+            return store.transactions.filter(t => t.type === filter.value);
+        });
+
+        const totalPages = computed(() => Math.ceil(filteredTransactions.value.length / itemsPerPage));
 
         const paginatedTransactions = computed(() => {
             const start = (currentPage.value - 1) * itemsPerPage;
             const end = start + itemsPerPage;
-            return store.transactions.slice(start, end);
+            return filteredTransactions.value.slice(start, end);
         });
+
+        const setFilter = (newFilter) => {
+            filter.value = newFilter;
+            currentPage.value = 1;
+        };
 
         const prevPage = () => {
             if (currentPage.value > 1) currentPage.value--;
@@ -144,6 +163,9 @@ export default {
         return {
             store,
             openAtmModal,
+            filter,
+            setFilter,
+            filteredTransactions,
             currentPage,
             totalPages,
             paginatedTransactions,

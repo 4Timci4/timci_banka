@@ -38,7 +38,8 @@ export default {
                                 <i class="fas fa-hashtag mr-1"></i> Alıcı Hesap / Telefon
                             </label>
                             <div class="transfer-input-wrapper">
-                                <input type="text" v-model="transferForm.phone" placeholder="555-0100" maxlength="10" 
+                                <input type="text" v-model="transferForm.phone" placeholder="555-0100" maxlength="10"
+                                       @keydown="handleKeydown"
                                        class="transfer-input">
                                 <div class="transfer-input-icon">
                                     <i class="fas fa-user"></i>
@@ -54,6 +55,7 @@ export default {
                             <div class="transfer-input-wrapper">
                                 <input type="text" v-model="transferForm.amount" placeholder="0"
                                        @input="formatAmountInput"
+                                       @keydown="handleKeydown"
                                        class="transfer-input amount">
                                 <div class="transfer-input-icon accent">
                                     <i class="fas fa-dollar-sign"></i>
@@ -79,7 +81,8 @@ export default {
                                 <i class="fas fa-align-left mr-1"></i> Açıklama (Opsiyonel)
                             </label>
                             <div class="transfer-input-wrapper">
-                                <input type="text" v-model="transferForm.description" placeholder="Ödeme notu..." 
+                                <input type="text" v-model="transferForm.description" placeholder="Ödeme notu..."
+                                       @keydown="handleKeydown"
                                        class="transfer-input">
                                 <div class="transfer-input-icon">
                                     <i class="fas fa-pen"></i>
@@ -250,6 +253,7 @@ export default {
                     
                     if (result.success) {
                         transferForm.value = { phone: '', amount: '', description: '' };
+                        store.showSuccess('Transfer Başarılı', 'Para transferi başarıyla gerçekleştirildi.');
                         store.currentView = 'dashboard';
                     } else {
                         store.showError('Transfer Hatası', result.message || 'Transfer işlemi başarısız');
@@ -266,6 +270,7 @@ export default {
                     });
                     
                     transferForm.value = { phone: '', amount: '', description: '' };
+                    store.showSuccess('Transfer Başarılı', 'Para transferi başarıyla gerçekleştirildi.');
                     store.currentView = 'dashboard';
                 }
             } catch (error) {
@@ -274,7 +279,14 @@ export default {
             }
         };
 
+        const handleKeydown = (e) => {
+            if (e.key === 'Enter' && isValidTransfer.value) {
+                handleTransfer();
+            }
+        };
+
         return {
+            handleKeydown,
             store,
             transferForm,
             quickAmounts,

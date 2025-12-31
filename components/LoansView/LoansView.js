@@ -223,6 +223,7 @@ export default {
                 date: new Date().toLocaleDateString('tr-TR')
             });
 
+            store.showSuccess('Kredi Onaylandı', `${store.formatMoney(amount)} tutarındaki krediniz hesabınıza aktarıldı.`);
             store.currentView = 'loans';
         };
 

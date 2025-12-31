@@ -122,7 +122,7 @@
 .loans-amount-label {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #64748b;
+    color: #cbd5e1;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
@@ -232,7 +232,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.625rem;
-    color: #64748b;
+    color: #cbd5e1;
     font-weight: 700;
     font-family: 'JetBrains Mono', monospace;
     margin-top: 0.5rem;
@@ -267,7 +267,7 @@
 
 .loans-detail-label {
     font-size: 0.625rem;
-    color: #64748b;
+    color: #cbd5e1;
     text-transform: uppercase;
     font-weight: 700;
     transition: color 150ms;
@@ -472,7 +472,7 @@
 
 .active-loans-empty-icon i {
     font-size: 1.875rem;
-    color: #64748b;
+    color: #94a3b8; /* Kept darker for empty state icon */
 }
 
 .active-loans-empty-text {
@@ -482,7 +482,7 @@
 }
 
 .active-loans-empty-subtext {
-    color: #64748b;
+    color: #94a3b8; /* Kept darker for empty state */
     font-size: 0.875rem;
     margin-top: 0.5rem;
     max-width: 200px;
@@ -632,7 +632,7 @@
 
 .loan-balance-label {
     font-size: 0.625rem;
-    color: #64748b;
+    color: #cbd5e1;
     text-transform: uppercase;
     font-weight: 700;
 }
@@ -705,7 +705,7 @@
 .loan-pay-text {
     font-size: 0.625rem;
     font-weight: 700;
-    color: #94a3b8;
+    color: #cbd5e1;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     transition: color 300ms;

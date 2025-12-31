@@ -25,6 +25,35 @@ export const closeErrorModal = (store) => {
 };
 
 /**
+ * Shows a success modal with title and message
+ * @param {Object} store - The reactive store object
+ * @param {string} title - Success title
+ * @param {string} message - Success message
+ */
+export const showSuccess = (store, title, message) => {
+    store.successModal.show = true;
+    store.successModal.title = title;
+    store.successModal.message = message;
+    
+    // Auto close after 3 seconds
+    setTimeout(() => {
+        if (store.successModal.show) {
+            closeSuccessModal(store);
+        }
+    }, 3000);
+};
+
+/**
+ * Closes the success modal
+ * @param {Object} store - The reactive store object
+ */
+export const closeSuccessModal = (store) => {
+    store.successModal.show = false;
+    store.successModal.title = '';
+    store.successModal.message = '';
+};
+
+/**
  * Updates user information
  * @param {Object} store - The reactive store object
  * @param {Object} userData - New user data to merge

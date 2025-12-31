@@ -96,7 +96,7 @@
 
 .atm-subtitle {
     font-size: 0.875rem;
-    color: #94a3b8;
+    color: #cbd5e1;
 }
 
 .atm-close-btn {
@@ -107,7 +107,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
+    color: #cbd5e1;
     transition: all 150ms;
 }
 
@@ -145,7 +145,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
+    color: #cbd5e1;
 }
 
 .atm-balance-amount {
@@ -160,7 +160,7 @@
     display: block;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #64748b;
+    color: #cbd5e1;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-left: 0.25rem;
@@ -203,7 +203,7 @@
     transform: translateY(-50%);
     font-size: 1.5rem;
     font-weight: 700;
-    color: #64748b;
+    color: #cbd5e1;
     transition: color 150ms;
 }
 
@@ -251,7 +251,7 @@
     padding-bottom: 1rem;
     border-radius: 0.75rem;
     font-weight: 700;
-    color: #94a3b8;
+    color: #cbd5e1;
     transition: all 150ms;
 }
 

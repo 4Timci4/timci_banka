@@ -41,7 +41,7 @@
 }
 
 .bills-subtitle {
-    color: #94a3b8;
+    color: #cbd5e1;
     font-size: 0.875rem;
     margin-top: 0.25rem;
 }
@@ -67,7 +67,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     transition: all 300ms;
-    color: #64748b;
+    color: #cbd5e1;
 }
 
 .bills-filter-btn:hover {
@@ -237,7 +237,7 @@
 
 .bill-company {
     font-size: 0.625rem;
-    color: #94a3b8;
+    color: #cbd5e1;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 700;
@@ -281,7 +281,7 @@
 
 .bill-detail-label {
     font-size: 0.5625rem;
-    color: #64748b;
+    color: #cbd5e1;
     text-transform: uppercase;
     font-weight: 700;
     display: block;
@@ -299,7 +299,7 @@
 }
 
 .bill-detail-value.normal {
-    color: #94a3b8;
+    color: #cbd5e1;
 }
 
 .bill-card-footer {
@@ -313,7 +313,7 @@
 
 .bill-amount-label {
     font-size: 0.625rem;
-    color: #64748b;
+    color: #cbd5e1;
     text-transform: uppercase;
     font-weight: 700;
     margin-bottom: 0.125rem;
@@ -389,7 +389,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
+    color: #cbd5e1;
     transition: color 150ms, background-color 150ms;
 }
 

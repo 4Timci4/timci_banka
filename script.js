@@ -23,6 +23,7 @@ import LoansView from './components/LoansView/LoansView.js';
 import SettingsView from './components/SettingsView/SettingsView.js';
 import AtmModal from './components/AtmModal/AtmModal.js';
 import ErrorModal from './components/ErrorModal/ErrorModal.js';
+import SuccessModal from './components/SuccessModal/SuccessModal.js';
 import CreditCard from './components/CreditCard/CreditCard.js';
 
 const app = createApp({
@@ -180,6 +181,7 @@ app.component('loans-view', LoansView);
 app.component('settings-view', SettingsView);
 app.component('atm-modal', AtmModal);
 app.component('error-modal', ErrorModal);
+app.component('success-modal', SuccessModal);
 app.component('credit-card', CreditCard);
 
 // Provide store globally for template access

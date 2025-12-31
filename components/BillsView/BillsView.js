@@ -202,6 +202,7 @@ export default {
                 amount: amount,
                 date: new Date().toLocaleDateString('tr-TR')
             });
+            store.showSuccess('Ödeme Başarılı', `${bill.title} başarıyla ödendi.`);
         };
 
         const payAllBills = () => {
@@ -226,6 +227,7 @@ export default {
                 amount: total,
                 date: new Date().toLocaleDateString('tr-TR')
             });
+            store.showSuccess('Ödeme Başarılı', `Tüm faturalar (${store.formatMoney(total)}) başarıyla ödendi.`);
         };
 
         return {

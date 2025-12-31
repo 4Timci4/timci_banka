@@ -49,6 +49,7 @@ export default {
                             <div class="atm-input-wrapper group">
                                 <input type="text" v-model="store.atmAmount" placeholder="0"
                                        @input="store.atmAmount = store.formatAmount(store.atmAmount)"
+                                       @keydown="handleKeydown"
                                        class="atm-input">
                                 <span class="atm-currency-symbol">$</span>
                             </div>
@@ -111,6 +112,7 @@ export default {
                     amount: amount,
                     date: new Date().toLocaleDateString('tr-TR')
                 });
+                store.showSuccess('İşlem Başarılı', `${store.formatMoney(amount)} başarıyla yatırıldı.`);
             } else {
                 store.user.balance -= amount;
                 store.transactions.unshift({
@@ -120,15 +122,23 @@ export default {
                     amount: amount,
                     date: new Date().toLocaleDateString('tr-TR')
                 });
+                store.showSuccess('İşlem Başarılı', `${store.formatMoney(amount)} başarıyla çekildi.`);
             }
 
             closeAtmModal();
         };
 
+        const handleKeydown = (e) => {
+            if (e.key === 'Enter') {
+                handleAtmTransaction();
+            }
+        };
+
         return {
             store,
             closeAtmModal,
-            handleAtmTransaction
+            handleAtmTransaction,
+            handleKeydown
         };
     }
 };

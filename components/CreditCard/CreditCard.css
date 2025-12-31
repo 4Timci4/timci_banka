@@ -186,7 +186,7 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.625rem;
-    color: #94a3b8;
+    color: #cbd5e1;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-weight: 500;
@@ -314,7 +314,7 @@
 .card-holder-label {
     font-size: 0.5rem;
     text-transform: uppercase;
-    color: #64748b;
+    color: #cbd5e1;
     letter-spacing: 0.05em;
     margin-bottom: 0.125rem;
 }
@@ -345,7 +345,7 @@
 .card-expiry-label {
     font-size: 0.5rem;
     text-transform: uppercase;
-    color: #64748b;
+    color: #cbd5e1;
     letter-spacing: 0.05em;
     margin-bottom: 0.125rem;
 }
